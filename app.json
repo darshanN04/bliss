@@ -4,16 +4,27 @@
     "slug": "bliss",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "icon": "./assets/icons/logo.png",
+    "scheme": "bliss",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/icons/logo.png",
+      "foregroundImage":"./assets/icons/logo.png",
+      "resizeMode": "contain",
+      "imageWidth": 150,
+      "imageheight": 150,
+      "backgroundColor": "#ffffff"
+    },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/icons/logo.png",
+        "resizeMode": "contain",
+        "imageWidth": 150,
+        "imageHeight": 150,
         "backgroundColor": "#ffffff"
       }
     },
@@ -23,16 +34,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ]
+      "expo-router"      
     ],
     "experiments": {
       "typedRoutes": true
