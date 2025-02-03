@@ -102,7 +102,7 @@ const Auth = () => {
         
         >
             
-            <Text style={styles.buttonText}>Sign Up</Text>    
+            <Text style={styles.buttonText}>Sign Ups</Text>    
         </TouchableOpacity>
 
         
