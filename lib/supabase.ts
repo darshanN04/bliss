@@ -7,9 +7,6 @@ import 'react-native-get-random-values';
 // As Expo's SecureStore does not support values larger than 2048
 // bytes, an AES-256 key is generated and stored in SecureStore, while
 // it is used to encrypt/decrypt values stored in AsyncStorage.
-const supabaseUrl = "https://rzhirhuwhubbgebngcic.supabase.co"
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ6aGlyaHV3aHViYmdlYm5nY2ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgwODc3NjYsImV4cCI6MjA1MzY2Mzc2Nn0.5knwf8CyNJUc9_iRaBpy92Zv8FdA4B7mLezErExX0ZI"
-
 class LargeSecureStore {
   private async _encrypt(key: string, value: string) {
     const encryptionKey = crypto.getRandomValues(new Uint8Array(256 / 8));
@@ -53,7 +50,11 @@ class LargeSecureStore {
   }
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+const SUPABASE_URL = "https://wnijbxfkwfqrrgoytxcd.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InduaWpieGZrd2ZxcnJnb3l0eGNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg5MzM4NjUsImV4cCI6MjA1NDUwOTg2NX0.ee1gyLEFisxFrtSvKDcrEUOpTny2atI4nV-Hn70yhB4";
+
+
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     storage: new LargeSecureStore(),
     autoRefreshToken: true,

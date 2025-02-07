@@ -5,6 +5,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import 'react-native-reanimated';
+import { ToastProvider } from 'react-native-toast-notifications';
+import AuthProvider from '@/providers/auth-provider';
 
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -13,8 +15,10 @@ export default function RootLayout() {
   
 
     return (
-    <Stack screenOptions={{ headerShown: false }}>
-      
-    </Stack>
+      <ToastProvider>
+        <AuthProvider>
+          <Stack screenOptions={{headerShown: false}}/>
+        </AuthProvider>
+    </ToastProvider>
   );
 }

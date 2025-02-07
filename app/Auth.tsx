@@ -1,10 +1,13 @@
-import { ImageBackground, StyleSheet, Text, View, TextInput, Touchable, TouchableOpacity } from 'react-native'
+import { ImageBackground, StyleSheet, Text, View, TextInput, Touchable, TouchableOpacity, DrawerLayoutAndroid } from 'react-native'
 import React from 'react'
 import {useForm, Controller} from 'react-hook-form'
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import errorMap from 'zod/lib/locales/en'
-import { Link, router } from 'expo-router'
+import {  router } from 'expo-router'
+import { useToast } from 'react-native-toast-notifications'
+import { supabase } from '@/lib/supabase'
+
 
 const authschema = zod.object({
     email: zod.string().email({ message: 'Invalid email address' }),
@@ -12,7 +15,10 @@ const authschema = zod.object({
     .string()
     .min(6, { message: 'Password must be at least 6 characters long' }),
 })
+
 const Auth = () => {
+    const Toast = useToast();
+
     const {control, handleSubmit, formState} = useForm({
         resolver: zodResolver(authschema),
         defaultValues: {
@@ -21,13 +27,43 @@ const Auth = () => {
         }
     });
 
-    const signIn = (data: zod.infer<typeof authschema>) => {
-        console.log(data);
-    };
-    const signUp = (data: zod.infer<typeof authschema>) => {
-        console.log(data);
-        router.push('/Home');
-    };
+    
+    const signIn = async (data: zod.infer<typeof authschema>) => {
+        const {error} = await supabase.auth.signInWithPassword(data);
+        if (error){
+            alert(error.message);
+        } else{
+            Toast.show("Signed in succesfully",{
+                type: 'success',
+                placement: 'top',
+                duration: 2000,
+            });            
+            router.push('/Home');
+        }
+    }
+
+    const signUp = async (data: zod.infer<typeof authschema>) => {
+        const { email, password } = data;
+    
+        const {
+            data: { session },
+            error,
+          } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+          })
+          console.log(data)
+        if (error){
+            alert(error.message);
+        } else{
+            Toast.show("Signed up succesfully",{
+                type: 'success',
+                placement: 'top',
+                duration: 2000,
+            });            
+            router.push('/Home');
+        };
+    }
 
   return (
     <ImageBackground
@@ -102,7 +138,7 @@ const Auth = () => {
         
         >
             
-            <Text style={styles.buttonText}>Sign Ups</Text>    
+            <Text style={styles.buttonText}>Sign Up</Text>    
         </TouchableOpacity>
 
         
@@ -166,5 +202,5 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16,
         fontWeight: 'bold',
-    }
+    },
 })

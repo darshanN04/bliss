@@ -17,7 +17,7 @@ const AuthContext = createContext<AuthData>({
     mounting: true,
 });
 
-const Authprovider = ({children}: PropsWithChildren) => {
+export default function Authprovider ({children}: PropsWithChildren){
     const[session, setSession] = useState<Session | null>(null)
     const[user, setUser] = useState(null)
     const[mounting, setMounting] = useState(true)
@@ -27,7 +27,10 @@ const Authprovider = ({children}: PropsWithChildren) => {
             const{
                 data:{session},
             } = await supabase.auth.getSession();
+            
             setSession(session);
+            console.log("Session:", session);
+
             if(session){
                 const{data: user, error} = await supabase
                 .from('users')
@@ -56,5 +59,4 @@ const Authprovider = ({children}: PropsWithChildren) => {
   )
 }
 export const useAuth = () => useContext(AuthContext);
-export default Authprovider
 

@@ -1,8 +1,10 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import Auth from "./Auth"
-import { Link, SplashScreen } from 'expo-router';
+import { SplashScreen } from 'expo-router';
 import { useFonts } from 'expo-font';
+import Home from './(pages)/Home';
+import { ToastProvider } from 'react-native-toast-notifications';
+import AuthProvider from '@/providers/auth-provider';
 
 
 const index = () => {
@@ -30,11 +32,12 @@ const index = () => {
       <TouchableOpacity onPress={() => setShowIntro(false)}>
         <Text style={{ fontSize: 24 }}>➡️ Tap to Enter</Text>
       </TouchableOpacity>
-    </View>    )
+    </View>    
+    )
   }
   else{
   return (
-    <Auth />
+    <Home/>
   )
 }
 }
