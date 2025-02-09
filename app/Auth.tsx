@@ -61,7 +61,6 @@ const Auth = () => {
                 placement: 'top',
                 duration: 2000,
             });            
-            router.push('/Home');
         };
     }
 

@@ -29,7 +29,6 @@ export default function Authprovider ({children}: PropsWithChildren){
             } = await supabase.auth.getSession();
             
             setSession(session);
-            console.log("Session:", session);
 
             if(session){
                 const{data: user, error} = await supabase
