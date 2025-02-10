@@ -63,7 +63,7 @@ const Item = ({ item }: ItemProps) => (
     <Link href={item.link} asChild>
       <Pressable>
         <Image source={item.src} style={styles.image} />
-        <Text style={styles.text}>{item.name}</Text>
+        <Text style={styles.cardtext}>{item.name}</Text>
       </Pressable>
     </Link>
   </View>
@@ -92,14 +92,15 @@ const Home = () => {
       />
     );
   };
+  
   return (
-    <View>
+    <View style={{flex: 1, backgroundColor: "rgb(113, 146, 16)"}}>
       <SafeAreaView>
         <Text>Home</Text>
         <Text style={styles.title}>Welcome User</Text>
         <FlatList
         data={Data}
-        renderItem={renderItem}
+        renderItem={renderItem} 
         keyExtractor={item => item.id}
         numColumns={2}
         columnWrapperStyle={styles.row}
@@ -121,6 +122,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 10,
+    
   },
   row: {
     flex: 1,
@@ -128,21 +130,31 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginRight: 30,
     marginTop: 20,
+    
     gap: 20
+    
   },
   card: {
     flex: 1,
-    backgroundColor: "#f8f8f8",
+    backgroundColor: "rgb(194, 193, 193)",
     margin: 5,
-    padding: 10,
+    padding: 0,
     borderRadius: 10,
     alignItems: "center",
-    elevation: 3,
+    paddingTop: 20,
+    paddingBottom: 10,
+    elevation: 10,
+
   },
-  text: {
+  
+  cardtext: {
     marginTop: 5,
     fontSize: 14,
     fontWeight: "bold",
+    flex: 1,
+    flexWrap: "wrap",
+    textAlign: "center",
+    backgroundColor: "rgba(214, 35, 35, 0)",
   },
   title:{
     marginBottom: 100,

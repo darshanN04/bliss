@@ -5,6 +5,7 @@ import { useFonts } from 'expo-font';
 import Home from './(pages)/Home';
 import { ToastProvider } from 'react-native-toast-notifications';
 import AuthProvider from '@/providers/auth-provider';
+import Yoga from './(pages)/(layers)/Yoga';
 
 
 const index = () => {
@@ -37,7 +38,7 @@ const index = () => {
   }
   else{
   return (
-    <Home/>
+    <Yoga />
   )
 }
 }
