@@ -64,14 +64,14 @@ export default Yoga;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
     width: '100%',
     alignSelf: 'center',
     paddingTop: 20,
+    backgroundColor: "#2a9d8f"
   },
   card: {
-    backgroundColor: 'white',
-    padding: 20,
+    backgroundColor: "#e9c46a",
+    padding: 10,
     borderRadius: 20,
     alignItems: 'center',
     shadowColor: '#000',
@@ -80,12 +80,12 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 15,
     marginBottom: 20,
-    marginRight: 20,
-    marginLeft: 20,
+    marginRight: 40,
+    marginLeft: 40,
   },
   image: {
-    width: 120,
-    height: 150,
+    width: 100,
+    height: 140,
     borderRadius: 10,
   },
   name: {

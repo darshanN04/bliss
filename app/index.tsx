@@ -38,7 +38,7 @@ const index = () => {
   }
   else{
   return (
-    <Yoga />
+    <Home />
   )
 }
 }

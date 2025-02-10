@@ -94,7 +94,7 @@ const Home = () => {
   };
   
   return (
-    <View style={{flex: 1, backgroundColor: "rgb(113, 146, 16)"}}>
+    <View style={{flex: 1, backgroundColor: "#2a9d8f"}}>
       <SafeAreaView>
         <Text>Home</Text>
         <Text style={styles.title}>Welcome User</Text>
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
-    backgroundColor: "rgb(194, 193, 193)",
+    backgroundColor: "#e9c46a",
     margin: 5,
     padding: 0,
     borderRadius: 10,
