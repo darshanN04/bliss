@@ -35,7 +35,7 @@ const Stopwatch: React.FC = () => {
 
   async function stopSound() {
     if (sound) {
-      await sound.stopAsync();
+      await sound.pauseAsync();
       setSound(null);
     }
   }
