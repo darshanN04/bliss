@@ -10,7 +10,7 @@ type Asana = {
 };
 
 const asanas: Asana[] = [
-  { id: 'padmasana', name: 'Padmasana', description: 'Padmasana is a cross-legged sitting meditation pose in yoga.', src: require("../../../assets/images/Yogapos/padmasana.png") },
+  { id: 'padmasana', name: 'Padmasana', description: 'Padmasana is a cross-legged sitting meditation pose in yoga.', src: require("@/assets/images/Yoga/Yogapos/padmasana.png") },
   { id: 'vajrasana', name: 'Vajrasana', description: 'Vajrasana is a kneeling pose that aids digestion and meditation.', src: 'https://example.com/vajrasana.jpg' },
   { id: 'bhujangasana', name: 'Bhujangasana', description: 'Also known as Cobra Pose, Bhujangasana strengthens the spine.', src: 'https://example.com/bhujangasana.jpg' },
   { id: 'tadasana', name: 'Tadasana', description: 'Tadasana, or Mountain Pose, is a foundational yoga pose.', src: 'https://example.com/tadasana.jpg' },
@@ -22,11 +22,14 @@ const asanas: Asana[] = [
   { id: 'halasana', name: 'Halasana', description: 'Halasana, or Plow Pose, is a deep forward bend.', src: 'https://example.com/halasana.jpg' }
 ];
 
-const Yoga: React.FC = () => {
+const Intermediate: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<string | null>(null);
 
   return (
     <SafeAreaView style={styles.container}>
+        <View style={{alignItems: "center", marginBottom: "5%"}}>
+                    <Text style={{fontSize: 20, fontWeight: 900}}>Intermediate</Text>
+                </View>
       <FlatList
         data={asanas}
         keyExtractor={(item) => item.id}
@@ -59,7 +62,7 @@ const Yoga: React.FC = () => {
   );
 };
 
-export default Yoga;
+export default Intermediate;
 
 const styles = StyleSheet.create({
   container: {

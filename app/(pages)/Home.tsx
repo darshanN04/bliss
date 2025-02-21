@@ -1,8 +1,8 @@
-import { ActivityIndicator, StyleSheet, Text, View, Image, FlatList, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Image, FlatList, Pressable } from 'react-native'
 import React, { useState } from 'react'
-import { Link, Redirect } from 'expo-router'
-import { useAuth } from '@/providers/auth-provider';
+import { Link } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Card  } from "react-native-paper";
 
 
 type ItemData = {
@@ -16,8 +16,8 @@ const Data: ItemData[] = [
   {
     id: "1",
     name: "Yoga",
-    src: require("../../assets/images/yoga.jpg"),
-    link: "/(layers)/Yoga"
+    src: require("@/assets/images/yoga.jpg"),
+    link: "/(layers)/(YOGA)/Yoga"
   },
   {
     id: "2",
@@ -59,14 +59,19 @@ type ItemProps ={
 }
 
 const Item = ({ item }: ItemProps) => (
-  <View style={styles.card}>
-    <Link href={item.link} asChild>
-      <Pressable>
-        <Image source={item.src} style={styles.image} />
-        <Text style={styles.cardtext}>{item.name}</Text>
-      </Pressable>
-    </Link>
-  </View>
+    <View style={{width: 130, height: 150, borderRadius: 12, overflow: "hidden", elevation: 0, backgroundColor: "rgb(227, 212, 42)"}}>
+      <Link href={item.link} asChild>
+          <Pressable>
+            <Card style={{backgroundColor: "rgb(131, 152, 177)",}}>
+              <Card.Cover source={item.src} style={{height: 120, backgroundColor: "rgba(201, 9, 9, 0)", borderRadius: 0}}/>
+              <Card.Content style={{alignItems: "center", top: "3%"}}>
+                <Text style={{fontSize: 15, fontWeight: 900}}>{item.name}</Text>
+              </Card.Content> 
+            </Card>         
+          </Pressable>
+      </Link>
+    </View>
+
 );
 
 
@@ -113,48 +118,14 @@ const Home = () => {
 export default Home
 
 const styles = StyleSheet.create({
-  button: {
-    marginTop: 15,
-    paddingVertical: 15,
-    color: 'black',
-  },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 10,
-    
-  },
-  row: {
+    row: {
     flex: 1,
     justifyContent: "space-between",
     marginLeft: 30,
     marginRight: 30,
     marginTop: 20,
-    
     gap: 20
     
-  },
-  card: {
-    flex: 1,
-    backgroundColor: "#e9c46a",
-    margin: 5,
-    padding: 0,
-    borderRadius: 10,
-    alignItems: "center",
-    paddingTop: 20,
-    paddingBottom: 10,
-    elevation: 10,
-
-  },
-  
-  cardtext: {
-    marginTop: 5,
-    fontSize: 14,
-    fontWeight: "bold",
-    flex: 1,
-    flexWrap: "wrap",
-    textAlign: "center",
-    backgroundColor: "rgba(214, 35, 35, 0)",
   },
   title:{
     marginBottom: 100,
