@@ -83,9 +83,9 @@ const Item = ({ item }: ItemProps) => (
 
 const Home = () => {
 
-  const {session, mounting } = useAuth();
-  if(mounting) return <ActivityIndicator size="large" color="#0000ff" />
-  if(!session) return <Redirect href="/Auth" />
+  // const {session, mounting } = useAuth();
+  // if(mounting) return <ActivityIndicator size="large" color="#0000ff" />
+  // if(!session) return <Redirect href="/Auth" />
   const [selectedId, setSelectedId] = useState<string>();
 
   const renderItem = ({item}: {item: ItemData}) => {
