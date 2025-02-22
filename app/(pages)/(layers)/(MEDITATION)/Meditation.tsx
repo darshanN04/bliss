@@ -35,7 +35,7 @@ const Stopwatch: React.FC = () => {
 
   async function stopSound() {
     if (sound) {
-      await sound.pauseAsync();
+      await sound.stopAsync();
       setSound(null);
     }
   }
@@ -80,13 +80,14 @@ const styles = StyleSheet.create({
   timer: {
     fontSize: 50,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginBottom: 200,
     color: "white",
   },
   button: {
-    backgroundColor: "#007bff",
+    backgroundColor: "rgba(30, 50, 123, 0.72)",
     padding: 15,
     margin: 10,
+    paddingTop: 10,
     borderRadius: 5,
     width: '60%'
   },
