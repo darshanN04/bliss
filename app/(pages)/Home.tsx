@@ -1,8 +1,12 @@
-import { StyleSheet, Text, View, Image, FlatList, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Image, FlatList, Pressable, ActivityIndicator, Touchable, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-import { Link } from 'expo-router'
+import { Link, Redirect  } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card  } from "react-native-paper";
+import { useAuth } from '@/providers/auth-provider';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+
 
 
 type ItemData = {
@@ -79,9 +83,9 @@ const Item = ({ item }: ItemProps) => (
 
 const Home = () => {
 
-  // const {session, mounting } = useAuth();
-  // if(mounting) return <ActivityIndicator size="large" color="#0000ff" />
-  // if(!session) return <Redirect href="/Auth" />
+  const {session, mounting } = useAuth();
+  if(mounting) return <ActivityIndicator size="large" color="#0000ff" />
+  if(!session) return <Redirect href="/Auth" />
   const [selectedId, setSelectedId] = useState<string>();
 
   const renderItem = ({item}: {item: ItemData}) => {
@@ -101,8 +105,12 @@ const Home = () => {
   return (
     <View style={{flex: 1, backgroundColor: "#2a9d8f"}}>
       <SafeAreaView>
-        <Text>Home</Text>
-        <Text style={styles.title}>Welcome User</Text>
+
+        <View style={{top: "10%", height: "20%"}}>
+            <Text style={{alignSelf: 'center', fontSize: 20}}>Welcome Darshan</Text>    
+        </View>
+
+
         <FlatList
         data={Data}
         renderItem={renderItem} 
