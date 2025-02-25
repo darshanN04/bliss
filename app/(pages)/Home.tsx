@@ -105,8 +105,14 @@ const Home = () => {
   return (
     <View style={{flex: 1, backgroundColor: "#2a9d8f"}}>
       <SafeAreaView>
+        
+        <View style={{position: 'fixed', top: 0, left: "75%", padding: 10, marginTop: 10}}>
+          <Link href="/Profile">
+            <Image source={require("@/assets/icons/logo.png")} style={{ width: 50, height: 50 }} />
+          </Link>
+        </View>
 
-        <View style={{top: "10%", height: "20%"}}>
+        <View style={{top: "0%", height: "10%"}}>
             <Text style={{alignSelf: 'center', fontSize: 20}}>Welcome Darshan</Text>    
         </View>
 
