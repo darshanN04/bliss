@@ -73,7 +73,13 @@ const Item = ({ item }: ItemProps) => (
   </View>
 );
 
+//REAL FUNCTION STARTS HERE
+
 const Home = () => {
+
+  // const {session, mounting } = useAuth();
+  // if(mounting) return <ActivityIndicator size="large" color="#0000ff" />
+  // if(!session) return <Redirect href="/Auth" />
   const [selectedId, setSelectedId] = useState<string>();
 
   const renderItem = ({item}: {item: ItemData}) => {
@@ -102,6 +108,7 @@ const Home = () => {
       style={{ flex: 1 }}
     >
       <SafeAreaView>
+        {/* <Text>Home</Text> */}
         <Text style={styles.title}>Welcome User</Text>
         <FlatList
           data={Data}
