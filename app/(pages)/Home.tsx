@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View, Image, FlatList, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Image, FlatList, Pressable, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
-import { Link } from 'expo-router'
+import { Link, Redirect } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from "react-native-paper";
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAuth } from '@/providers/auth-provider';
 
 type ItemData = {
   id: string,
@@ -74,6 +75,12 @@ const Item = ({ item }: ItemProps) => (
 );
 
 const Home = () => {
+
+  const {session, mounting } = useAuth();
+  {console.log(session)}
+  if(mounting) return <ActivityIndicator size="large" color="#0000ff" />
+  if(!session) return <Redirect href="/Auth" />
+
   const [selectedId, setSelectedId] = useState<string>();
 
   const renderItem = ({item}: {item: ItemData}) => {
@@ -102,7 +109,17 @@ const Home = () => {
       style={{ flex: 1 }}
     >
       <SafeAreaView>
-        <Text style={styles.title}>Welcome User</Text>
+
+        <View style={{position: 'fixed', top: 0, left: "75%", padding: 10, marginTop: 10}}>
+          <Link href="/Profile">
+            <Image source={require("@/assets/icons/logo.png")} style={{ width: 50, height: 50 }} />
+          </Link>
+        </View>
+
+        <View style={{top: "0%", height: "10%"}}>
+            <Text style={{alignSelf: 'center', fontSize: 20}}>Welcome Darshan</Text>    
+        </View>     
+
         <FlatList
           data={Data}
           renderItem={renderItem} 
