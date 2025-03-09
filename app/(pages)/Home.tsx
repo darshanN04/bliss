@@ -1,13 +1,9 @@
-import { StyleSheet, Text, View, Image, FlatList, Pressable, ActivityIndicator, Touchable, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Image, FlatList, Pressable } from 'react-native'
 import React, { useState } from 'react'
-import { Link, Redirect  } from 'expo-router'
+import { Link } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Card  } from "react-native-paper";
-import { useAuth } from '@/providers/auth-provider';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-
-
+import { Card } from "react-native-paper";
+import { LinearGradient } from 'expo-linear-gradient';
 
 type ItemData = {
   id: string,
@@ -31,19 +27,19 @@ const Data: ItemData[] = [
   },
   {
     id: "3",
-    name: "music",
+    name: "Music",
     src: require("../../assets/images/music.jpg"),
     link: "/(layers)/Music"
   },
   {
     id: "4",
-    name: "wordplay",
+    name: "Wordplay",
     src: require("../../assets/images/wordplay.jpg"),
     link: "/(layers)/Wordplay"
   },
   {
     id: "5",
-    name: "quotes",
+    name: "Quotes",
     src: require("../../assets/images/quotes.jpg"),
     link: "/(layers)/Quotes"
   },
@@ -55,7 +51,7 @@ const Data: ItemData[] = [
   }
 ];
 
-type ItemProps ={
+type ItemProps = {
   item: ItemData,
   onPress: () => void,
   backgroundColor: string,
@@ -63,29 +59,21 @@ type ItemProps ={
 }
 
 const Item = ({ item }: ItemProps) => (
-    <View style={{width: 130, height: 150, borderRadius: 12, overflow: "hidden", elevation: 0, backgroundColor: "rgb(227, 212, 42)"}}>
-      <Link href={item.link} asChild>
-          <Pressable>
-            <Card style={{backgroundColor: "rgb(131, 152, 177)",}}>
-              <Card.Cover source={item.src} style={{height: 120, backgroundColor: "rgba(201, 9, 9, 0)", borderRadius: 0}}/>
-              <Card.Content style={{alignItems: "center", top: "3%"}}>
-                <Text style={{fontSize: 15, fontWeight: 900}}>{item.name}</Text>
-              </Card.Content> 
-            </Card>         
-          </Pressable>
-      </Link>
-    </View>
-
+  <View style={{width: 130, height: 150, borderRadius: 12, overflow: "hidden", elevation: 0, backgroundColor: "rgb(227, 212, 42)"}}>
+    <Link href={item.link} asChild>
+        <Pressable>
+          <Card style={{backgroundColor: "rgb(236, 254, 255)",}}>
+            <Card.Cover source={item.src} style={{height: 120, backgroundColor: "rgba(201, 9, 9, 0)", borderRadius: 0}}/>
+            <Card.Content style={{alignItems: "center", top: "3%"}}>
+              <Text style={{fontSize: 15, fontWeight: 900}}>{item.name}</Text>
+            </Card.Content> 
+          </Card>         
+        </Pressable>
+    </Link>
+  </View>
 );
 
-
-//REAL FUNCTION STARTS HERE
-
 const Home = () => {
-
-  // const {session, mounting } = useAuth();
-  // if(mounting) return <ActivityIndicator size="large" color="#0000ff" />
-  // if(!session) return <Redirect href="/Auth" />
   const [selectedId, setSelectedId] = useState<string>();
 
   const renderItem = ({item}: {item: ItemData}) => {
@@ -103,45 +91,46 @@ const Home = () => {
   };
   
   return (
-    <View style={{flex: 1, backgroundColor: "#2a9d8f"}}>
+    <LinearGradient
+      // colors={['#90D5FF', '#FFFFFF']} //light blue and light orange
+      // colors={['#90D5FF', '#A8D5BA']} //light blue and light green
+      // colors={['#90D5FF', '#FFF0A6']} //light blue and light yellow 
+      // colors={['#90D5FF', '#FFD8B6']} //light blue and light orange
+      // colors={['#A8D5BA', '#61A7A1']} //light green and dark green
+      colors={['#A8D5BA', '#FFD8B6']} //light green and light orange
+      // locations={[0.2, 1.5]}
+      style={{ flex: 1 }}
+    >
       <SafeAreaView>
-        
-        <View style={{position: 'fixed', top: 0, left: "75%", padding: 10, marginTop: 10}}>
-          <Link href="/Profile">
-            <Image source={require("@/assets/icons/logo.png")} style={{ width: 50, height: 50 }} />
-          </Link>
-        </View>
-
-        <View style={{top: "0%", height: "10%"}}>
-            <Text style={{alignSelf: 'center', fontSize: 20}}>Welcome Darshan</Text>    
-        </View>
-
-
+        <Text style={styles.title}>Welcome User</Text>
         <FlatList
-        data={Data}
-        renderItem={renderItem} 
-        keyExtractor={item => item.id}
-        numColumns={2}
-        columnWrapperStyle={styles.row}
+          data={Data}
+          renderItem={renderItem} 
+          keyExtractor={item => item.id}
+          numColumns={2}
+          columnWrapperStyle={styles.row}
         />        
       </SafeAreaView>
-    </View>
+    </LinearGradient>
   )
 }
 
-export default Home
+export default Home;
 
 const styles = StyleSheet.create({
-    row: {
+  row: {
     flex: 1,
     justifyContent: "space-between",
     marginLeft: 30,
     marginRight: 30,
     marginTop: 20,
     gap: 20
-    
   },
-  title:{
-    marginBottom: 100,
+  title: {
+    marginTop: 70,
+    marginBottom: 70,
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: "center",
   }
-})
+});

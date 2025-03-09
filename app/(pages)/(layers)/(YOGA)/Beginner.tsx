@@ -264,6 +264,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.34)',
   },
   modalContent: {
+    // alignItems: 'stretch',
     alignItems: 'center',
     paddingBottom: 20,
   },
@@ -355,6 +356,7 @@ const styles = StyleSheet.create({
   closeButton: {
     backgroundColor: 'white',
     padding: 10,
+    // marginLeft:152,
     borderRadius: 5,
   },
   buttonText: {
