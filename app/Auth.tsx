@@ -4,9 +4,10 @@ import {useForm, Controller} from 'react-hook-form'
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import errorMap from 'zod/lib/locales/en'
-import {  router } from 'expo-router'
+import {  Redirect, router } from 'expo-router'
 import { useToast } from 'react-native-toast-notifications'
 import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/providers/auth-provider'
 
 
 const authschema = zod.object({
@@ -18,7 +19,9 @@ const authschema = zod.object({
 
 const Auth = () => {
     const Toast = useToast();
+    const{session}=useAuth();
 
+    if(session) return <Redirect href="/Home" />
     const {control, handleSubmit, formState} = useForm({
         resolver: zodResolver(authschema),
         defaultValues: {
@@ -38,7 +41,6 @@ const Auth = () => {
                 placement: 'top',
                 duration: 2000,
             });            
-            router.push('/Home');
         }
     }
 
