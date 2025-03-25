@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, Image, FlatList, Pressable, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, Image, FlatList, Pressable, ActivityIndicator, Touchable, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-import { Link, Redirect } from 'expo-router'
+import { Link, Redirect, router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from "react-native-paper";
 import { LinearGradient } from 'expo-linear-gradient';
