@@ -1,10 +1,12 @@
 import { StyleSheet, Text, View, Image, FlatList, Pressable, ActivityIndicator } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, Redirect } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from "react-native-paper";
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth } from '@/providers/auth-provider';
+import { supabase } from '@/lib/supabase'
+
 
 type ItemData = {
   id: string,
@@ -77,9 +79,31 @@ const Item = ({ item }: ItemProps) => (
 const Home = () => {
 
   const {session, mounting } = useAuth();
-  {console.log(session)}
+  // {console.log(session)}
   if(mounting) return <ActivityIndicator size="large" color="#0000ff" />
   if(!session) return <Redirect href="/Auth" />
+  const [username, setUsername] = useState<string | null>(null);
+  useEffect(() => {
+    if (session?.user) {
+      fetchUserName(session.user.id);
+    }
+  }, [session]);
+
+  const fetchUserName = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('users') 
+        .select('full_name') 
+        .eq('id', userId)
+        .single(); 
+
+      if (error) throw error;
+      setUsername(data?.full_name || 'User');
+    } catch (error) {
+      console.error('Error fetching username:', error);
+      setUsername('User'); // Default fallback name
+    }
+  };
 
   const [selectedId, setSelectedId] = useState<string>();
 
@@ -117,7 +141,7 @@ const Home = () => {
         </View>
 
         <View style={{top: "0%", height: "10%"}}>
-            <Text style={{alignSelf: 'center', fontSize: 20}}>Welcome Darshan</Text>    
+            <Text style={{alignSelf: 'center', fontSize: 20}}>Welcome {username}</Text>    
         </View>     
 
         <FlatList

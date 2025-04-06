@@ -10,6 +10,7 @@ import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/providers/auth-provider'
 
 
+
 const authschema = zod.object({
     email: zod.string().email({ message: 'Invalid email address' }),
     password: zod
@@ -21,7 +22,8 @@ const Auth = () => {
     const Toast = useToast();
     const{session}=useAuth();
 
-    if(session) return <Redirect href="/Home" />
+    if(session) return <Redirect href="/More" />
+
     const {control, handleSubmit, formState} = useForm({
         resolver: zodResolver(authschema),
         defaultValues: {
@@ -54,7 +56,7 @@ const Auth = () => {
             email: email,
             password: password,
           })
-          console.log(data)
+          // console.log(data)
         if (error){
             alert(error.message);
         } else{
