@@ -80,15 +80,7 @@ const Passchange = () => {
     }
   };
 
-  const handleTestSignOut = () => {
-    // Direct navigation and sign out
-    toast.show('Signing out...', { type: 'info' });
-    
-    setTimeout(async () => {
-      await supabase.auth.signOut();
-      router.replace('/Auth');
-    }, 500);
-  };
+  
 
   return (
     <View style={styles.container}>
@@ -124,12 +116,7 @@ const Passchange = () => {
         <Text style={styles.cancelButtonText}>Cancel</Text>
       </TouchableOpacity>
       
-      <TouchableOpacity 
-        style={[styles.button, {marginTop: 20, backgroundColor: '#f44336'}]} 
-        onPress={handleTestSignOut}
-      >
-        <Text style={styles.buttonText}>Sign Out Directly</Text>
-      </TouchableOpacity>
+      
     </View>
   );
 };

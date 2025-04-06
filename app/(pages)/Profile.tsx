@@ -3,20 +3,28 @@ import React from 'react'
 import { supabase } from '@/lib/supabase'
 import { Link, Redirect, useRouter } from 'expo-router'
 import { useAuth } from '@/providers/auth-provider';
+import { useToast } from 'react-native-toast-notifications';
 
 
 const { width, height } = Dimensions.get('window');
 
 const Profile = () => {
-
+  const toast = useToast();
   const router = useRouter();
   const handlePasswordChange = async () => {
-    router.push('/Passchange')
+      router.push("/Passchange")
   }
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-  }   
+  
+  const handleTestSignOut = () => {
+      // Direct navigation and sign out
+      toast.show('Signing out...', { type: 'info' });
+      
+      setTimeout(async () => {
+        await supabase.auth.signOut();
+        router.replace('/Auth');
+      }, 500);
+    };
 
   const {session, mounting } = useAuth();
   if(mounting) return <ActivityIndicator size="large" color="#0000ff" />
@@ -36,9 +44,12 @@ const Profile = () => {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.buttons}>
-          <TouchableOpacity onPress={handleSignOut}>
-            <Text style={[styles.btntext, {paddingRight: 10}]}>Sign Out</Text>
+        <View>
+          <TouchableOpacity 
+                  style={[styles.button, {marginTop: 20, backgroundColor: '#f44336'}]} 
+                  onPress={handleTestSignOut}
+                >
+              <Text style={[styles.btntext, {color: "white"}]}>Sign Out Directly</Text>
           </TouchableOpacity>
         </View>
         
@@ -60,10 +71,10 @@ const styles = StyleSheet.create({
   buttons: {
     marginTop: 20,
     marginBottom: 20,
-    padding: 20,
+    padding: 15,
     backgroundColor: "rgb(7, 148, 155)",
     width: width*0.7,
-    borderRadius: 20,
+    borderRadius: 8,
     alignItems: "center"
   },
   btntext:{
@@ -73,6 +84,16 @@ const styles = StyleSheet.create({
     width: width*0.4,
     alignContent: "center",
     textAlign: "center",
-    height: 20
-  }
+    height: 20,
+    fontSize: 16,
+  },
+  button: {
+    backgroundColor: '#007bff',
+    padding: 15,
+    borderRadius: 8,
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  
 })
