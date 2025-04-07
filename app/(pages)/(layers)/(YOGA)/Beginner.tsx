@@ -50,7 +50,7 @@ const asanas: Asana[] = [
       precaution: 'Avoid if you have back or neck injuries.',
       benefit: 'Strengthens the spine\nOpens the chest\nImproves flexibility in the back\nRelieves stress',
       target: 'Spine, chest, shoulders',
-      src: 'https://example.com/bhujangasana.jpg'
+      src: require("../../../../assets/images/Yoga/Yogapos/bhujangasana.png")
     },
     {
       id: 'tadasana',
@@ -63,7 +63,7 @@ const asanas: Asana[] = [
       precaution: 'People with balance issues should perform this pose near a wall for support.',
       benefit: 'Improves posture\nIncreases awareness\nStrengthens legs\nImproves balance',
       target: 'Spine, legs, arms',
-      src: 'https://example.com/tadasana.jpg'
+      src: require("../../../../assets/images/Yoga/Yogapos/tadasana.png")
     },
     {
       id: 'trikonasana',
@@ -77,12 +77,12 @@ const asanas: Asana[] = [
       precaution: 'Avoid if you have neck or back issues.',
       benefit: 'Stretches the hamstrings, hips, and spine\nStrengthens legs and core\nImproves balance and flexibility',
       target: 'Hips, legs, spine',
-      src: 'https://example.com/trikonasana.jpg'
+      src: require("../../../../assets/images/Yoga/Yogapos/trikonasana.png")
     },
     {
-      id: 'savasana',
-      name: 'Savasana',
-      description: 'Savasana, or Corpse Pose, is a relaxation pose often used for meditation.',
+      id: 'shavasana',
+      name: 'Shavasana',
+      description: 'Shavasana, or Corpse Pose, is a relaxation pose often used for meditation.',
       instruction: `1. Lie flat on your back with your legs extended and arms by your sides.
                     2. Close your eyes and relax your body.
                     3. Focus on your breath and let go of all tension.
@@ -90,7 +90,7 @@ const asanas: Asana[] = [
       precaution: 'None.',
       benefit: 'Promotes deep relaxation\nReduces stress and anxiety\nHelps lower blood pressure',
       target: 'Full body relaxation',
-      src: 'https://example.com/savasana.jpg'
+      src:  require("../../../../assets/images/Yoga/Yogapos/shavasana.png")
     },
     {
       id: 'vrikshasana',
@@ -103,7 +103,7 @@ const asanas: Asana[] = [
       precaution: 'Avoid if you have ankle or knee issues.',
       benefit: 'Improves balance and focus\nStrengthens legs and core\nIncreases flexibility in the hips',
       target: 'Legs, hips, core',
-      src: 'https://example.com/vrikshasana.jpg'
+      src: require("../../../../assets/images/Yoga/Yogapos/vrikshasana.png")
     },
     {
       id: 'paschimottanasana',
@@ -116,7 +116,7 @@ const asanas: Asana[] = [
       precaution: 'Avoid if you have back or hamstring injuries.',
       benefit: 'Stretches the hamstrings and lower back\nCalms the nervous system\nImproves digestion',
       target: 'Hamstrings, lower back',
-      src: 'https://example.com/paschimottanasana.jpg'
+      src: require("../../../../assets/images/Yoga/Yogapos/paschimottanasana.png")
     },
     {
       id: 'setu-bandhasana',
@@ -129,7 +129,7 @@ const asanas: Asana[] = [
       precaution: 'Avoid if you have neck or back injuries.',
       benefit: 'Strengthens the lower back\nOpens the chest and heart\nImproves spinal flexibility',
       target: 'Spine, chest, legs',
-      src: 'https://example.com/setu-bandhasana.jpg'
+      src: require("../../../../assets/images/Yoga/Yogapos/setubandhasana.png")
     },
     {
       id: 'halasana',
@@ -141,7 +141,7 @@ const asanas: Asana[] = [
       precaution: 'Avoid if you have neck or back issues.',
       benefit: 'Stretches the spine, shoulders, and hamstrings\nRelieves tension in the back\nImproves flexibility',
       target: 'Spine, hamstrings, shoulders',
-      src: 'https://example.com/halasana.jpg'
+      src: require("../../../../assets/images/Yoga/Yogapos/halasana.png")
     }
   ];
 
@@ -225,8 +225,8 @@ const styles = StyleSheet.create({
     marginLeft: 40,
   },
   image: {
-    width: 100,
-    height: 140,
+    // width: 200,
+    // height: 140,
     borderRadius: 10,
   },
   imageGap: {
