@@ -229,8 +229,8 @@ const styles = StyleSheet.create({
     elevation: 15,
     marginTop: 10,
     marginBottom: 10,
-    marginRight: 40,
-    marginLeft: 40,
+    marginRight: 80,
+    marginLeft: 80,
   },
   image: {
     width: 200,
