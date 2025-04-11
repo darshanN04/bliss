@@ -148,15 +148,15 @@ const Intermediate: React.FC = () => {
             <View style={styles.overlay}>
               <View style={styles.modalView}>
                 <LinearGradient
-                  colors={['rgba(168, 213, 186, 0.7)', 'rgba(255, 216, 182, 0.7)']} //light green and light orange
+                  colors={['rgb(255, 255, 255)', 'rgb(255, 255, 255)']}
                   style={{ flex: 1 }}>
                   <Text style={styles.modalText}>{asana.name}</Text>
                   <Image source={asana.src} style={styles.image} />
                   <View style={styles.imageGap} />
                   <ScrollView contentContainerStyle={styles.modalContent}>
-                    <Text style={styles.modalTextOverlay}>{"Description"}</Text>
+                    <Text style={styles.modalTextOverlay}>{"DESCRIPTION"}</Text>
                     <Text style={styles.textOverlay}>{asana.description}</Text>
-                    <Text style={styles.modalTextOverlay}>{"\nInstruction"}</Text>
+                    <Text style={styles.modalTextOverlay}>{"\nINSTRUCTIONS"}</Text>
                     <Text style={styles.textOverlay}>{asana.instruction
                       .split('\n') // Split the string by newlines
                       .map((line, index) => (
@@ -164,9 +164,9 @@ const Intermediate: React.FC = () => {
                           {index + 1}. {line.trim()}{'\n'}
                         </Text>
                       ))}</Text>
-                    <Text style={styles.modalTextOverlay}>{"\nPrecautions"}</Text>
+                    <Text style={styles.modalTextOverlay}>{"\nPRECAUTIONS"}</Text>
                     <Text style={styles.textOverlay}>{asana.precaution}</Text>
-                    <Text style={styles.modalTextOverlay}>{"\nBenefit"}</Text>
+                    <Text style={styles.modalTextOverlay}>{"\nBENEFITS"}</Text>
                     <Text style={styles.textOverlay}>{asana.benefit
                       .split('\n')
                       .map((line, index) => (
@@ -174,7 +174,7 @@ const Intermediate: React.FC = () => {
                           {`\u2022`} {line.trim()}{'\n'}
                         </Text>
                       ))}</Text>
-                    <Text style={styles.modalTextOverlay}>{"\nTargets"}</Text>
+                    <Text style={styles.modalTextOverlay}>{"\nTARGETS"}</Text>
                     <Text style={styles.textOverlay}>{asana.target
                       .split(', ')
                       .map((line, index) => (
@@ -217,8 +217,8 @@ const styles = StyleSheet.create({
     elevation: 15,
     marginTop: 10,
     marginBottom: 10,
-    marginRight: 40,
-    marginLeft: 40,
+    marginRight: 80,
+    marginLeft: 80,
   },
   image: {
     width: 200,
@@ -236,14 +236,15 @@ const styles = StyleSheet.create({
   },
   overlay: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 0,
     top: 60,
-    left: 10,
-    right: 10,
+    left: 0,
+    right: 0,
     backgroundColor: 'rgba(255, 255, 255, 0.83)',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 30,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius:30,
     alignSelf: 'center',
     overflow: 'hidden',
   },
@@ -262,43 +263,40 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    paddingBottom: 20,
+    paddingBottom: 0,
   },
   modalText: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'rgb(129, 180, 149)',
     marginBottom: 10,
     alignSelf: 'center',
-    textShadowColor: 'black',
+    textShadowColor: 'rgb(255, 216, 182)',
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 5,
     paddingTop: 10,
   },
   modalTextOverlay:{
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'rgb(129, 180, 149)',
     // textAlign: 'center',
     // alignSelf: 'center',
-    textDecorationLine: 'underline',
-    textShadowColor: 'black', // Outline color
+    // textDecorationLine: 'underline',
+    textShadowColor: 'rgb(255, 216, 182)', // Outline color
     textShadowOffset: { width: 0, height: 0 }, // Center the shadow
     textShadowRadius: 3, // Adjust thickness
     marginBottom: 10,
-    paddingLeft: 20 ,
+    paddingLeft: 15 ,
     paddingRight: 10,
   },
   textOverlay: {
     fontSize: 16,
-    color: 'white',
+    color: 'black',
     textAlign: 'left',
     marginBottom: 20,
     paddingLeft: 15,
     paddingRight: 15,
-    textShadowColor: 'black', // Outline color
-    textShadowOffset: { width: 0, height: 0 }, // Center the shadow
-    textShadowRadius: 3, // Adjust thickness
   },
   listItem: {
     fontSize: 16,
@@ -306,7 +304,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   closeButton: {
-    backgroundColor: 'white',
+    backgroundColor: 'rgb(129, 180, 149)',
     padding: 10,
     borderRadius: 5,
     alignSelf: 'center',
@@ -314,6 +312,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonText: {
+    color:'white',
     fontSize: 16,
     fontWeight: 'bold',
   },
