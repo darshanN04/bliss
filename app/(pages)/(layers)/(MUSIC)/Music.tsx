@@ -61,7 +61,7 @@ const Music = () => {
       
 
       <View style={styles.header}>
-        <Text style={styles.headerText}>WordPlay</Text>
+        <Text style={styles.headerText}>Music</Text>
       </View>
 
         <FlatList
