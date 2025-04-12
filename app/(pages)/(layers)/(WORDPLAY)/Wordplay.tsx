@@ -30,9 +30,14 @@ const Data: ItemData[] = [
   },
   {
     id: "4",
-    name: "Emoji Phrase Craze",
-    link: "/Emoji"
+    name: "Brain Teaser",
+    link: "/Brain"
   }
+  // {
+  //   id: "4",
+  //   name: "Emoji Phrase Craze",
+  //   link: "/Emoji"
+  // }
 ];
 
 type ItemProps = {
