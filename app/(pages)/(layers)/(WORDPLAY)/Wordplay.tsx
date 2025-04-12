@@ -46,9 +46,9 @@ const Item = ({ item }: ItemProps) => (
   <View >
     <Link href={item.link} asChild>
       <Pressable>
-        <Card style={[styles.wordplayContainer, {backgroundColor: "rgb(236, 254, 255)",}]}>
+        <Card style={[styles.wordplayContainer, {backgroundColor: 'rgb(241, 213, 188)',}]}>
           <Card.Content style={{alignItems: "center", top: "3%"}}>
-            <Text style={{fontSize: 20, fontWeight: 900, textAlign: "center"}}>{item.name}</Text>
+            <Text style={{fontSize: 20, fontWeight: 900, textAlign: "center", color: "rgb(64, 147, 97)"}}>{item.name}</Text>
           </Card.Content> 
         </Card>         
       </Pressable>

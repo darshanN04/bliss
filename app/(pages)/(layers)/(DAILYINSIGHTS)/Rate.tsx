@@ -1,25 +1,37 @@
+// Rate.tsx
 import React, { useState } from 'react'
 import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Platform,
-  Modal,
-  Pressable,
+  StyleSheet, Text, View, TextInput, TouchableOpacity, Platform, Modal, Pressable,
 } from 'react-native'
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useNavigation } from '@react-navigation/native'
+import { useRouter } from 'expo-router'
+import { useLocalSearchParams } from 'expo-router'
+
+
 
 const emojis: string[] = ['😄', '😊', '😐', '😔', '😢', '😠']
 
+type DiaryEntry = {
+  date: string
+  title: string
+  content: string
+  mood: string
+}
+
 const Rate: React.FC = () => {
-  const [selectedMood, setSelectedMood] = useState<string>('😐')
-  const [title, setTitle] = useState<string>('')
-  const [content, setContent] = useState<string>('')
-  const [date, setDate] = useState<Date>(new Date())
+  const navigation = useNavigation()
+  const params = useLocalSearchParams()
+  const [selectedMood, setSelectedMood] = useState<string>((params.mood as string) || '😐')
+  const [title, setTitle] = useState<string>((params.title as string) || '')
+  const [content, setContent] = useState<string>((params.content as string) || '')
+  const [date, setDate] = useState<Date>(params.date ? new Date(params.date as string) : new Date())
   const [showPicker, setShowPicker] = useState<boolean>(false)
   const [emojiModalVisible, setEmojiModalVisible] = useState<boolean>(false)
+  const isEditing = !!params.title // or any field
+
+  const router = useRouter()
 
   const formattedDate = date.toDateString()
 
@@ -31,6 +43,22 @@ const Rate: React.FC = () => {
   const handleMoodSelect = (emoji: string) => {
     setSelectedMood(emoji)
     setEmojiModalVisible(false)
+  }
+
+  const saveEntry = async () => {
+    const newEntry: DiaryEntry = {
+      date: date.toISOString().split('T')[0],
+      title,
+      content,
+      mood: selectedMood,
+    }
+
+    const existing = await AsyncStorage.getItem('diaryEntries')
+    const entries: DiaryEntry[] = existing ? JSON.parse(existing) : []
+    entries.push(newEntry)
+
+    await AsyncStorage.setItem('diaryEntries', JSON.stringify(entries))
+    router.push("..") // Type-safe nav
   }
 
   return (
@@ -90,6 +118,10 @@ const Rate: React.FC = () => {
         textAlignVertical="top"
         placeholderTextColor="#999"
       />
+
+      <TouchableOpacity style={styles.saveButton} onPress={saveEntry}>
+        <Text style={styles.saveButtonText}>Save Entry</Text>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -118,7 +150,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   bigEmoji: {
-    fontSize: 30,
+    fontSize: 50,
   },
   titleInput: {
     fontSize: 18,
@@ -140,7 +172,18 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderWidth: 1,
   },
-  // Modal styles
+  saveButton: {
+    backgroundColor: '#4c8dff',
+    padding: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  saveButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.3)',
@@ -164,7 +207,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    gap: 10,
   },
   modalEmoji: {
     fontSize: 30,

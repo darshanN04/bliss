@@ -50,7 +50,7 @@ const Data: ItemData[] = [
     id: "6",
     name:"rate",
     src: require("../../assets/images/rate.jpg"),
-    link: "/(layers)/Rate"
+    link: "/(layers)/DiaryList"
   }
 ];
 

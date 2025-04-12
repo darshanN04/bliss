@@ -28,7 +28,7 @@ const Data: QuotesData[] = [
   },
   {
     id: '5',
-    text:  "\"You\'r Awesome.\"",
+    text:  "\"You\'re Awesome.\"",
   },
 ];
 
