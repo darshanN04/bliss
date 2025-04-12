@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import React from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
 
 // Define the type for quotes data
 type QuotesData = {
@@ -49,32 +50,36 @@ const QuotesCard = ({ item, backgroundColor, textColor } : QuotesProps) => {
 
 const Quotes = () => {
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={['rgb(168, 213, 186)', 'rgb(255, 216, 182)']} //light green and light orange
+      style={{ flex: 1 }}>
+      <View style={styles.container}>
 
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Quotes</Text>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Quotes</Text>
+        </View>
+
+
+        <View>
+          <FlatList
+            data={Data}
+            horizontal
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <QuotesCard 
+                item={item} 
+                onPress={() => console.log(item.id)} 
+                backgroundColor="#f9c2ff"
+                textColor="rgb(3, 3, 3)"
+              />
+            )}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+
+
       </View>
-
-
-      <View>
-        <FlatList
-          data={Data}
-          horizontal
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <QuotesCard 
-              item={item} 
-              onPress={() => console.log(item.id)} 
-              backgroundColor="#f9c2ff"
-              textColor="rgb(3, 3, 3)"
-            />
-          )}
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
-
-
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -84,7 +89,7 @@ const styles = StyleSheet.create({
   container:{
     flex: 1,
     padding: 20,
-    backgroundColor: "rgb(24, 163, 29)",
+    // backgroundColor: "rgb(24, 163, 29)",
     justifyContent: "center",
     alignItems: "center",
     

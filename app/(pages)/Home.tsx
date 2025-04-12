@@ -139,7 +139,7 @@ const Home = () => {
 
         <View style={{position: 'fixed', top: 0, left: "75%", padding: 10, marginTop: 10}}>
           <Link href="/Profile">
-            <Image source={require("@/assets/icons/logo.png")} style={{ width: 50, height: 50 }} />
+            <Image source={require("@/assets/icons/logo.png")} style={{width: 50, height: 50 }} />
           </Link>
         </View>
 

@@ -2,6 +2,7 @@ import { FlatList, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View }
 import React from 'react'
 import { Link } from 'expo-router'
 import { Card } from 'react-native-paper';
+import { LinearGradient } from 'expo-linear-gradient';
 
 type data = {
   id: string,
@@ -43,27 +44,27 @@ type ItemProps = {
   textColor: string,
 }
 const Item = ({ item }: ItemProps) => (
-  <SafeAreaView style={{marginBottom: 30}}>
-    <Pressable>
-      <Link href={item.link}>
-        <Card style={{backgroundColor: "rgb(236, 254, 255)",width: "100%", height: 100, borderRadius: 20}}>
-          <Card.Content style={{alignItems: "center", top: "3%", justifyContent: "center"}}>
-            <Text style={{fontSize: 20,color: "black", fontWeight: 900, paddingTop: 15}}>{item.name}</Text>
-          </Card.Content> 
-        </Card> 
-      </Link>
-    </Pressable>
-  </SafeAreaView>
+    <SafeAreaView style={{marginBottom: 30}}>
+      <Pressable>
+        <Link href={item.link}>
+          <Card style={{backgroundColor: "rgb(236, 254, 255)",width: "100%", height: 100, borderRadius: 20}}>
+            <Card.Content style={{alignItems: "center", top: "3%", justifyContent: "center"}}>
+              <Text style={{fontSize: 20,color: "black", fontWeight: 900, paddingTop: 15}}>{item.name}</Text>
+            </Card.Content> 
+          </Card> 
+        </Link>
+      </Pressable>
+    </SafeAreaView>
 )
 const Music = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      
-
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Music</Text>
-      </View>
-
+    <LinearGradient
+      colors={['rgb(168, 213, 186)', 'rgb(255, 216, 182)']} //light green and light orange
+      style={{ flex: 1 }}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Music</Text>
+        </View>
         <FlatList
           data={Data}
           keyExtractor={item => item.id}
@@ -73,11 +74,12 @@ const Music = () => {
               item={item}
               onPress={() => {}} 
               backgroundColor="rgb(227, 212, 42)" 
-              textColor="black"/>
+              textColor="black"
+            />
           }
         />
-     
-    </SafeAreaView>
+      </SafeAreaView>
+    </LinearGradient>
   )
 }
 
@@ -86,12 +88,12 @@ const styles = StyleSheet.create({
   container:{
     flex: 1,
     padding: 20,
-    backgroundColor: "rgb(24, 163, 29)",
+    // backgroundColor: "rgb(24, 163, 29)",
   
   },
   header: {
-    marginTop: "5%",
-    marginBottom: "20%",
+    // marginTop: "5%",
+    // marginBottom: "20%",
     padding: 20
 
   },

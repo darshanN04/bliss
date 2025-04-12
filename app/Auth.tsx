@@ -135,7 +135,7 @@ const Auth = () => {
         </TouchableOpacity>
                 
         <TouchableOpacity 
-        style={[styles.button, {backgroundColor: 'rgba(37, 244, 151, 0)', borderWidth: 1, borderColor: 'white'}]} 
+        style={[styles.button]} 
         onPress={handleSubmit(signUp)} 
         disabled={formState.isSubmitting}
         
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
         color: 'red',
     },
     button: {
-        backgroundColor: 'rgb(37, 171, 244)',
+        backgroundColor: 'rgb(129, 180, 149)',
         width: '80%',
         padding: 16,
         borderRadius: 8,

@@ -125,8 +125,8 @@ const Beginner: React.FC = () => {
       colors={['rgb(168, 213, 186)', 'rgb(255, 216, 182)']} //light green and light orange
       style={{ flex: 1 }}>
       <SafeAreaView style={styles.container}>
-        <View style={{alignItems: "center", marginBottom: "5%"}}>
-          <Text style={{fontSize: 20, fontWeight: 900}}>Beginner</Text>
+        <View style={{alignItems: "center", marginBottom: "4%"}}>
+          <Text style={{fontSize: 20, fontWeight: 900, color:'white', textShadowColor: 'black', textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 5}}>BEGINNER PRACTITIONERS</Text>
         </View>
         <FlatList
           data={asanas}
@@ -209,7 +209,8 @@ const styles = StyleSheet.create({
     // backgroundColor:'rgb(255, 255, 255)', 
     // backgroundColor:'rgb(216, 229, 243)',
     // backgroundColor:'rgb(235, 225, 200)',
-    backgroundColor:'rgb(255, 255, 255)',
+    // backgroundColor:'rgb(180, 200, 190)',
+    backgroundColor: 'white',
     padding: 10,
     borderRadius: 20,
     alignItems: 'center',
@@ -220,8 +221,8 @@ const styles = StyleSheet.create({
     elevation: 15,
     marginTop: 10,
     marginBottom: 10,
-    marginRight: 80,
-    marginLeft: 80,
+    marginRight: 40,
+    marginLeft: 40,
   },
   image: {
     width: 200,
@@ -240,7 +241,7 @@ const styles = StyleSheet.create({
   overlay: {
     position: 'absolute',
     bottom: 0,
-    top: 60,
+    top: 55,
     left: 0,
     right: 0,
     backgroundColor: 'rgba(255, 255, 255, 0.83)',

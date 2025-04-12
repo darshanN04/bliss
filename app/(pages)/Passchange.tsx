@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
 import { useToast } from 'react-native-toast-notifications';
 import { supabase } from '@/lib/supabase';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Passchange = () => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -118,51 +119,55 @@ const Passchange = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {step === 1 && (
-        <>
-          <Text style={styles.title}>Enter Current Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Current Password"
-            secureTextEntry
-            value={currentPassword}
-            onChangeText={setCurrentPassword}
-          />
-          <TouchableOpacity 
-            style={styles.button} 
-            onPress={handleCurrentPasswordSubmit} 
-            disabled={loading}>
-            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Submit</Text>}
-          </TouchableOpacity>
-        </>
-      )}
+    <LinearGradient
+      colors={['rgb(168, 213, 186)', 'rgb(255, 216, 182)']} //light green and light orange
+      style={{ flex: 1 }}>
+      <View style={styles.container}>
+        {step === 1 && (
+          <>
+            <Text style={styles.title}>Enter Current Password</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Current Password"
+              secureTextEntry
+              value={currentPassword}
+              onChangeText={setCurrentPassword}
+            />
+            <TouchableOpacity 
+              style={styles.button} 
+              onPress={handleCurrentPasswordSubmit} 
+              disabled={loading}>
+              {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Submit</Text>}
+            </TouchableOpacity>
+          </>
+        )}
 
-      {step === 2 && (
-        <>
-          <Text style={styles.title}>OTP Sent!</Text>
-          <Text style={styles.message}>Check your email inbox for the OTP.</Text>
-        </>
-      )}
+        {step === 2 && (
+          <>
+            <Text style={styles.title}>OTP Sent!</Text>
+            <Text style={styles.message}>Check your email inbox for the OTP.</Text>
+          </>
+        )}
 
-      {step === 3 && (
-        <>
-          <Text style={styles.title}>Enter OTP</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter OTP"
-            value={otp}
-            onChangeText={setOtp}
-          />
-          <TouchableOpacity 
-            style={styles.button} 
-            onPress={handleOtpSubmit} 
-            disabled={loading}>
-            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Verify OTP</Text>}
-          </TouchableOpacity>
-        </>
-      )}
-    </View>
+        {step === 3 && (
+          <>
+            <Text style={styles.title}>Enter OTP</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter OTP"
+              value={otp}
+              onChangeText={setOtp}
+            />
+            <TouchableOpacity 
+              style={styles.button} 
+              onPress={handleOtpSubmit} 
+              disabled={loading}>
+              {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Verify OTP</Text>}
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
+    </LinearGradient>
   );
 };
 
@@ -171,7 +176,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     padding: 20,
   },
   title: {
@@ -182,13 +187,14 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     padding: 15,
-    borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 8,
     marginBottom: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.37)",
+    borderColor: "white",
+    borderWidth: 1,
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: 'rgb(129, 180, 149)',
     padding: 15,
     borderRadius: 8,
     width: '100%',

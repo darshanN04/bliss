@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text, Touchable, TouchableOpacity, View } from '
 import React, { useState } from 'react'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { AntDesign } from "@expo/vector-icons";
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 const clues =[
@@ -30,51 +31,55 @@ const Crack = () => {
   const backStyle = useAnimatedStyle(() => ({transform: [{rotateY: `${rotate.value + 180}deg`}]}));
 
   return (
-    <View style={styles.container}>
-      <Text style={{position: "fixed", top: -150, fontSize: 30, fontWeight: "900"}}>Crack The Clue</Text>
+    <LinearGradient
+      colors={['rgb(168, 213, 186)', 'rgb(255, 216, 182)']} //light green and light orange
+      style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <Text style={{position: "fixed", top: -150, fontSize: 30, fontWeight: "900",color:'white'}}>Crack The Clue</Text>
 
-      <View style={styles.cardContainer}>
-        {!flipped && (
-          <Pressable onPress={flipCard}>
-            <Animated.View style={[styles.card, frontStyle]}>
-                <Text>{clues[index].question}</Text>
-            </Animated.View>
-          </Pressable>
-        )}
-        {flipped && (
-          <Pressable onPress={flipCard}>
-            <Animated.View style={[styles.card, backStyle]}>
-              <Text style={styles.text}>{clues[index].answer}</Text>
-            </Animated.View>
-          </Pressable>
-        )}
+        <View style={styles.cardContainer}>
+          {!flipped && (
+            <Pressable onPress={flipCard}>
+              <Animated.View style={[styles.card, frontStyle]}>
+                  <Text>{clues[index].question}</Text>
+              </Animated.View>
+            </Pressable>
+          )}
+          {flipped && (
+            <Pressable onPress={flipCard}>
+              <Animated.View style={[styles.card, backStyle]}>
+                <Text style={styles.text}>{clues[index].answer}</Text>
+              </Animated.View>
+            </Pressable>
+          )}
+        </View>
+
+        <View style={styles.navContainer}>
+          <TouchableOpacity
+            disabled={index === 0}
+            onPress={() => {
+              setFlipped(false);
+              setIndex((prev) => prev - 1);
+              rotate.value = withTiming(0, {duration: 0}); 
+            }}
+          >
+            <AntDesign name="arrowleft" size={40} color={index === 0 ? "gray" : "black"} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            disabled={index === clues.length - 1}
+            onPress={() => {
+              setFlipped(false);
+              setIndex((prev) => prev + 1);
+              rotate.value = withTiming(0, {duration: 0});
+            }}
+          >
+            <AntDesign name="arrowright" size={40} color={index === clues.length - 1 ? "gray" : "black"} />
+          </TouchableOpacity>
+        </View>
+
       </View>
-
-      <View style={styles.navContainer}>
-        <TouchableOpacity
-          disabled={index === 0}
-          onPress={() => {
-            setFlipped(false);
-            setIndex((prev) => prev - 1);
-            rotate.value = withTiming(0, {duration: 0}); 
-          }}
-        >
-          <AntDesign name="arrowleft" size={40} color={index === 0 ? "gray" : "black"} />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          disabled={index === clues.length - 1}
-          onPress={() => {
-            setFlipped(false);
-            setIndex((prev) => prev + 1);
-            rotate.value = withTiming(0, {duration: 0});
-          }}
-        >
-          <AntDesign name="arrowright" size={40} color={index === clues.length - 1 ? "gray" : "black"} />
-        </TouchableOpacity>
-      </View>
-
-    </View>
+    </LinearGradient>
   )
 }
 
@@ -85,7 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f4f4f4",
+    // backgroundColor: "#f4f4f4",
   },
   cardContainer: {
     width: 300,
@@ -95,7 +100,10 @@ const styles = StyleSheet.create({
   card: {
     width: "100%",
     height: "100%",
-    backgroundColor: "white",
+    // backgroundColor: "white",
+    backgroundColor: "rgba(255, 255, 255, 0.37)",
+    borderColor: "white",
+    borderWidth: 2,
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
@@ -105,7 +113,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-    elevation: 5,
+    // elevation: 5,
   },
   text: {
     fontSize: 20,
