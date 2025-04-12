@@ -4,6 +4,7 @@ import { Pressable } from 'react-native';
 import { Link } from 'expo-router';
 import { Card } from 'react-native-paper';
 import { FlatList } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 type ItemData = {
   id: string,
@@ -57,28 +58,31 @@ const Item = ({ item }: ItemProps) => (
 
 const Wordplay = () => {
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>WordPlay</Text>
-      </View>
+    <LinearGradient
+          colors={['rgb(168, 213, 186)', 'rgb(255, 216, 182)']} //light green and light orange
+          style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>WordPlay</Text>
+        </View>
 
-      <View>
-        <FlatList
-          data={Data}
-          keyExtractor={(item) => item.id}
-          numColumns={2}
-          renderItem={({ item }) => (
-            <Item
-              item={item}
-              onPress={() => console.log(item.id)}
-              backgroundColor="#f9c2ff"
-              textColor="rgb(3, 3, 3)"
+        <View>
+          <FlatList
+            data={Data}
+            keyExtractor={(item) => item.id}
+            numColumns={2}
+            renderItem={({ item }) => (
+              <Item
+                item={item}
+                onPress={() => console.log(item.id)}
+                backgroundColor="#f9c2ff"
+                textColor="rgb(3, 3, 3)"
+              />
+            )}
             />
-          )}
-          />
+        </View>
       </View>
-
-    </View>
+    </LinearGradient>
   )
 }
 
@@ -88,7 +92,7 @@ const styles = StyleSheet.create({
   container:{
     flex: 1,
     padding: 20,
-    backgroundColor: "rgb(24, 163, 29)",
+    // backgroundColor: "rgb(24, 163, 29)",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -102,6 +106,9 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
     color: "white",
+    // textShadowColor: 'black',
+    // textShadowOffset: { width: 0, height: 0 },
+    // textShadowRadius: 5
   },
   wordplayContainer: {
     width: 150, 
