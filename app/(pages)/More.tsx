@@ -4,6 +4,7 @@ import { router } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/providers/auth-provider';
 import { useToast } from 'react-native-toast-notifications';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const More = () => {
   const { session } = useAuth();
@@ -130,182 +131,186 @@ const More = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Getting to Know You</Text>
-      <Text style={styles.subtitle}>Please enter the following details to build your profile</Text>
+    <LinearGradient
+      colors={['rgb(168, 213, 186)', 'rgb(255, 216, 182)']} //light green and light orange
+      style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Getting to Know You</Text>
+        <Text style={styles.subtitle}>Please enter the following details to build your profile</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your Full Name"
-        value={fullName}
-        onChangeText={setFullName}
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your Full Name"
+          value={fullName}
+          onChangeText={setFullName}
+        />
 
-      <TouchableOpacity 
-        style={styles.input} 
-        onPress={() => setShowGenderModal(true)}
-      >
-        <Text style={[styles.inputText, !gender && styles.placeholder]}>
-          {gender || "Enter your Gender"}
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.input} 
+          onPress={() => setShowGenderModal(true)}
+        >
+          <Text style={[styles.inputText, !gender && styles.placeholder]}>
+            {gender || "Enter your Gender"}
+          </Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity 
-        style={styles.input} 
-        onPress={() => setShowDateModal(true)}
-      >
-        <Text style={[styles.inputText, !dob && styles.placeholder]}>
-          {dob || "Enter your Date of Birth"}
-        </Text>
-        <Text style={styles.calendarIcon}>📅</Text>
-      </TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.input} 
+          onPress={() => setShowDateModal(true)}
+        >
+          <Text style={[styles.inputText, !dob && styles.placeholder]}>
+            {dob || "Enter your Date of Birth"}
+          </Text>
+          <Text style={styles.calendarIcon}>📅</Text>
+        </TouchableOpacity>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your Phone Number"
-        keyboardType="phone-pad"
-        value={phone}
-        onChangeText={setPhone}
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your Phone Number"
+          keyboardType="phone-pad"
+          value={phone}
+          onChangeText={setPhone}
+        />
 
-      <TouchableOpacity
-        style={[styles.button, { backgroundColor: isFormValid ? '#6200ea' : '#ccc' }]}
-        disabled={!isFormValid || isSubmitting}
-        onPress={saveProfile}
-      >
-        <Text style={styles.buttonText}>
-          {isSubmitting ? 'Saving...' : 'Continue'}
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: isFormValid ? 'rgb(129, 180, 149)' : 'rgb(95, 134, 111)' }]}
+          disabled={!isFormValid || isSubmitting}
+          onPress={saveProfile}
+        >
+          <Text style={styles.buttonText}>
+            {isSubmitting ? 'Saving...' : 'Continue'}
+          </Text>
+        </TouchableOpacity>
 
-      {/* Custom Date Picker Modal */}
-      <Modal
-        visible={showDateModal}
-        transparent={true}
-        animationType="slide"
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Select Date of Birth</Text>
-            
-            <View style={styles.datePickerContainer}>
-              {/* Day Picker */}
-              <View style={styles.datePickerColumn}>
-                <Text style={styles.datePickerLabel}>Day</Text>
-                <ScrollView style={styles.datePickerScroll}>
-                  {days.map((d) => (
-                    <TouchableOpacity
-                      key={`day-${d}`}
-                      style={[
-                        styles.dateOption,
-                        d === day && styles.selectedDateOption
-                      ]}
-                      onPress={() => setDay(d)}
-                    >
-                      <Text style={[
-                        styles.dateOptionText,
-                        d === day && styles.selectedDateOptionText
-                      ]}>{d}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
+        {/* Custom Date Picker Modal */}
+        <Modal
+          visible={showDateModal}
+          transparent={true}
+          animationType="slide"
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Select Date of Birth</Text>
+              
+              <View style={styles.datePickerContainer}>
+                {/* Day Picker */}
+                <View style={styles.datePickerColumn}>
+                  <Text style={styles.datePickerLabel}>Day</Text>
+                  <ScrollView style={styles.datePickerScroll}>
+                    {days.map((d) => (
+                      <TouchableOpacity
+                        key={`day-${d}`}
+                        style={[
+                          styles.dateOption,
+                          d === day && styles.selectedDateOption
+                        ]}
+                        onPress={() => setDay(d)}
+                      >
+                        <Text style={[
+                          styles.dateOptionText,
+                          d === day && styles.selectedDateOptionText
+                        ]}>{d}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+                
+                {/* Month Picker */}
+                <View style={styles.datePickerColumn}>
+                  <Text style={styles.datePickerLabel}>Month</Text>
+                  <ScrollView style={styles.datePickerScroll}>
+                    {months.map((m) => (
+                      <TouchableOpacity
+                        key={`month-${m}`}
+                        style={[
+                          styles.dateOption,
+                          m === month && styles.selectedDateOption
+                        ]}
+                        onPress={() => setMonth(m)}
+                      >
+                        <Text style={[
+                          styles.dateOptionText,
+                          m === month && styles.selectedDateOptionText
+                        ]}>{m}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+                
+                {/* Year Picker */}
+                <View style={styles.datePickerColumn}>
+                  <Text style={styles.datePickerLabel}>Year</Text>
+                  <ScrollView style={styles.datePickerScroll}>
+                    {years.map((y) => (
+                      <TouchableOpacity
+                        key={`year-${y}`}
+                        style={[
+                          styles.dateOption,
+                          y === year && styles.selectedDateOption
+                        ]}
+                        onPress={() => setYear(y)}
+                      >
+                        <Text style={[
+                          styles.dateOptionText,
+                          y === year && styles.selectedDateOptionText
+                        ]}>{y}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
               </View>
               
-              {/* Month Picker */}
-              <View style={styles.datePickerColumn}>
-                <Text style={styles.datePickerLabel}>Month</Text>
-                <ScrollView style={styles.datePickerScroll}>
-                  {months.map((m) => (
-                    <TouchableOpacity
-                      key={`month-${m}`}
-                      style={[
-                        styles.dateOption,
-                        m === month && styles.selectedDateOption
-                      ]}
-                      onPress={() => setMonth(m)}
-                    >
-                      <Text style={[
-                        styles.dateOptionText,
-                        m === month && styles.selectedDateOptionText
-                      ]}>{m}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
-              </View>
-              
-              {/* Year Picker */}
-              <View style={styles.datePickerColumn}>
-                <Text style={styles.datePickerLabel}>Year</Text>
-                <ScrollView style={styles.datePickerScroll}>
-                  {years.map((y) => (
-                    <TouchableOpacity
-                      key={`year-${y}`}
-                      style={[
-                        styles.dateOption,
-                        y === year && styles.selectedDateOption
-                      ]}
-                      onPress={() => setYear(y)}
-                    >
-                      <Text style={[
-                        styles.dateOptionText,
-                        y === year && styles.selectedDateOptionText
-                      ]}>{y}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
+              <View style={styles.modalButtonsContainer}>
+                <TouchableOpacity
+                  style={[styles.modalButton, styles.cancelModalButton]}
+                  onPress={() => setShowDateModal(false)}
+                >
+                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity
+                  style={[styles.modalButton, styles.confirmModalButton]}
+                  onPress={setDateAndClose}
+                  disabled={!day || !month || !year}
+                >
+                  <Text style={styles.confirmButtonText}>Confirm</Text>
+                </TouchableOpacity>
               </View>
             </View>
-            
-            <View style={styles.modalButtonsContainer}>
+          </View>
+        </Modal>
+
+        {/* Gender Selection Modal */}
+        <Modal
+          visible={showGenderModal}
+          transparent={true}
+          animationType="slide"
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Select Gender</Text>
+              <ScrollView style={styles.modalScroll}>
+                {genderOptions.map((option, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={styles.optionItem}
+                    onPress={() => selectGender(option)}
+                  >
+                    <Text style={styles.optionText}>{option}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
               <TouchableOpacity
-                style={[styles.modalButton, styles.cancelModalButton]}
-                onPress={() => setShowDateModal(false)}
+                style={styles.cancelButton}
+                onPress={() => setShowGenderModal(false)}
               >
                 <Text style={styles.cancelButtonText}>Cancel</Text>
               </TouchableOpacity>
-              
-              <TouchableOpacity
-                style={[styles.modalButton, styles.confirmModalButton]}
-                onPress={setDateAndClose}
-                disabled={!day || !month || !year}
-              >
-                <Text style={styles.confirmButtonText}>Confirm</Text>
-              </TouchableOpacity>
             </View>
           </View>
-        </View>
-      </Modal>
-
-      {/* Gender Selection Modal */}
-      <Modal
-        visible={showGenderModal}
-        transparent={true}
-        animationType="slide"
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Select Gender</Text>
-            <ScrollView style={styles.modalScroll}>
-              {genderOptions.map((option, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={styles.optionItem}
-                  onPress={() => selectGender(option)}
-                >
-                  <Text style={styles.optionText}>{option}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-            <TouchableOpacity
-              style={styles.cancelButton}
-              onPress={() => setShowGenderModal(false)}
-            >
-              <Text style={styles.cancelButtonText}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-    </View>
+        </Modal>
+      </View>
+    </LinearGradient>
   );
 };
 
@@ -317,7 +322,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: '#f9f9f9',
+    // backgroundColor: '#f9f9f9',
   },
   title: {
     fontSize: 22,

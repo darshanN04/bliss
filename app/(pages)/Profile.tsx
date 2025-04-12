@@ -4,6 +4,7 @@ import { supabase } from '@/lib/supabase'
 import { Link, Redirect, useRouter } from 'expo-router'
 import { useAuth } from '@/providers/auth-provider';
 import { useToast } from 'react-native-toast-notifications';
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 const { width, height } = Dimensions.get('window');
@@ -31,37 +32,42 @@ const Profile = () => {
   if(!session) return <Redirect href="/Auth" />
   
   return (
-    <View style={{flex:1, padding: 10, alignItems: "center", backgroundColor: "rgba(24, 163, 29, 0.9)"}}>
+    <LinearGradient
+      colors={['rgb(168, 213, 186)', 'rgb(255, 216, 182)']} //light green and light orange
+      style={{ flex: 1 }}>
+      <View style={{flex:1, padding: 10, alignItems: "center"}}>
 
-      <View style={{paddingBottom: 100, paddingTop: 80}}>
-        <Text style={{fontSize: 30, fontWeight: 900, color: "white"}}>Profile</Text>
-      </View>
-
-      <View>
-        <View style={styles.buttons}>
-          <TouchableOpacity onPress={handlePasswordChange}>
-            <Text style={styles.btntext}>Password Change</Text>
-          </TouchableOpacity>
+        <View style={{paddingBottom: 100, paddingTop: 80}}>
+          <Text style={{fontSize: 30, fontWeight: 900, color: "white"}}>Profile</Text>
         </View>
 
         <View>
-          <TouchableOpacity 
-                  style={[styles.button, {marginTop: 20, backgroundColor: '#f44336'}]} 
-                  onPress={handleTestSignOut}
-                >
-              <Text style={[styles.btntext, {color: "white"}]}>Sign Out Directly</Text>
-          </TouchableOpacity>
+          <View style={styles.buttons}>
+            <TouchableOpacity onPress={handlePasswordChange}>
+              <Text style={styles.btntext}>Password Change</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.buttons}>
+            <TouchableOpacity 
+                    // style={[styles.button, {marginTop: 20, backgroundColor: '#f44336'}]} 
+                    onPress={handleTestSignOut}
+                  >
+                <Text style={[styles.btntext]}>Sign Out Directly</Text>
+            </TouchableOpacity>
+          </View>
+          
+          <View >
+            <TouchableOpacity
+              style={[styles.button, {marginTop: 20, backgroundColor: '#f44336'}]} >
+              <Text style={styles.btntext}>Delete Account</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        
-        <View style={styles.buttons}>
-          <TouchableOpacity>
-            <Text style={styles.btntext}>Delete Account</Text>
-          </TouchableOpacity>
-        </View>
+
+
       </View>
-
-
-    </View>
+    </LinearGradient>
   )
 }
 
@@ -72,7 +78,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
     padding: 15,
-    backgroundColor: "rgb(7, 148, 155)",
+    backgroundColor: "rgba(255, 255, 255, 0.37)",
+    borderColor: "white",
+    borderWidth: 1,
     width: width*0.7,
     borderRadius: 8,
     alignItems: "center"
