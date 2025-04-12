@@ -19,13 +19,13 @@ const Data: ItemData[] = [
   {
     id: "1",
     name: "Yoga",
-    src: require("@/assets/images/yoga.jpg"),
+    src: require("@/assets/images/yoga.png"),
     link: "/(layers)/(YOGA)/Yoga"
   },
   {
     id: "2",
     name: "Meditation",
-    src: require("../../assets/images/meditate.jpg"),
+    src: require("../../assets/images/meditate.png"),
     link: "/(layers)/Meditation"
   },
   {
@@ -37,13 +37,13 @@ const Data: ItemData[] = [
   {
     id: "4",
     name: "Wordplay",
-    src: require("../../assets/images/wordplay.jpg"),
+    src: require("../../assets/images/wordplay.png"),
     link: "/(layers)/Wordplay"
   },
   {
     id: "5",
     name: "Quotes",
-    src: require("../../assets/images/quotes.jpg"),
+    src: require("../../assets/images/quotes.png"),
     link: "/(layers)/Quotes"
   },
   {
@@ -125,26 +125,19 @@ const Home = () => {
   
   return (
     <LinearGradient
-      // colors={['#90D5FF', '#FFFFFF']} //light blue and light orange
-      // colors={['#90D5FF', '#A8D5BA']} //light blue and light green
-      // colors={['#90D5FF', '#FFF0A6']} //light blue and light yellow 
-      // colors={['#90D5FF', '#FFD8B6']} //light blue and light orange
-      // colors={['#A8D5BA', '#61A7A1']} //light green and dark green
-      colors={['#A8D5BA', '#FFD8B6']} //light green and light orange
-      // locations={[0.2, 1.5]}
+      colors={['#A8D5BA', '#FFD8B6']}
       style={{ flex: 1 }}
     >
       <SafeAreaView>
-        {/* <Text>Home</Text> */}
 
         <View style={{position: 'fixed', top: 0, left: "75%", padding: 10, marginTop: 10}}>
           <Link href="/Profile">
-            <Image source={require("@/assets/icons/logo.png")} style={{width: 50, height: 50 }} />
+            <Image source={require("@/assets/icons/logo.png")} style={{width: 75, height: 75, top: 30, left: 320}} />
           </Link>
         </View>
 
         <View style={{top: "0%", height: "10%"}}>
-            <Text style={{alignSelf: 'center', fontSize: 20}}>Welcome {username}</Text>    
+            <Text style={{alignSelf: 'center', fontSize: 25,color:'white',textShadowColor:'black',textShadowOffset:{ width: 1, height: 1 },textShadowRadius:3}}>Welcome {username}</Text>    
         </View>     
 
         <FlatList
