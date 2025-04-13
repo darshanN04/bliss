@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import {  View,  Text,  FlatList,  TouchableOpacity,  StyleSheet,  Image } from 'react-native'
+import {  View,  Text,  FlatList,  TouchableOpacity,  StyleSheet,  Image, ImageBackground } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { useRouter } from 'expo-router'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/providers/auth-provider';
 import { Int32 } from 'react-native/Libraries/Types/CodegenTypes'
+import { LinearGradient } from 'expo-linear-gradient'
 
 type Emoji = {
   id: Int32;
@@ -48,7 +49,6 @@ const DiaryList: React.FC = () => {
         const { data, error } = await supabase.rpc('get_user_diary_entries', {
           user_uuid: session.user.id,
         });
-        console.log('Fetched entries:', data);
         if (error) {
           console.error('Error fetching quotes:', error.message);
         } else {
@@ -63,6 +63,9 @@ const DiaryList: React.FC = () => {
       }
     }, [isFocused, session?.user.id]);
  return (
+  <LinearGradient
+            colors={['rgb(168, 213, 186)', 'rgb(255, 216, 182)']} //light green and light orange
+            style={{ flex: 1 }}>
     <View style={styles.container}>
       <View style={styles.headerRow}>
         <Text style={styles.header}>📓 My Diary</Text>
@@ -108,6 +111,7 @@ const DiaryList: React.FC = () => {
         <Text style={{ color: 'blue', textAlign: 'center', marginTop: 20 }}>Delete selected Entries</Text>
       </TouchableOpacity>
     </View>
+    </LinearGradient>
   )
 }
 
@@ -116,7 +120,7 @@ export default DiaryList
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f3f6ff',
+    backgroundColor: 'rgba(255, 255, 255, 0.28)',
     padding: 20,
   },
   headerRow: {

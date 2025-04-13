@@ -10,12 +10,14 @@ import {
   Pressable,
   Image,
   Alert,
+  ImageBackground,
 } from 'react-native';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/providers/auth-provider';
+import { useToast } from 'react-native-toast-notifications';
 
 type Emoji = {
   id: string;
@@ -23,7 +25,6 @@ type Emoji = {
 };
 
 const emojis: Emoji[] = [
-  { id: '0', src: require('@/assets/icons/ryd.png') },
   { id: '1', src: require('@/assets/icons/Angry.png') },
   { id: '2', src: require('@/assets/icons/Anxious.png') },
   { id: '3', src: require('@/assets/icons/Blush.png') },
@@ -38,7 +39,7 @@ const emojis: Emoji[] = [
 const Rate: React.FC = () => {
   const params = useLocalSearchParams();
 
-  const [selectedMood, setSelectedMood] = useState<string>((params.mood as string) || '0');
+  const [selectedMood, setSelectedMood] = useState<string>((params.mood as string) || '3');
   const [title, setTitle] = useState<string>((params.title as string) || '');
   const [content, setContent] = useState<string>((params.content as string) || '');
   const [date, setDate] = useState<Date>(params.date ? new Date(params.date as string) : new Date());
@@ -46,6 +47,8 @@ const Rate: React.FC = () => {
   const [emojiModalVisible, setEmojiModalVisible] = useState<boolean>(false);
   const { session } = useAuth();
   const router = useRouter();
+  const toast = useToast();
+  
 
   const formattedDate = date.toDateString();
   const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
@@ -64,6 +67,14 @@ const Rate: React.FC = () => {
 
   const saveEntry = async () => {
     const userId = session?.user?.id;
+    if (!title) {
+      toast.show('Add a TITLE.', { type: 'warning' });
+      return;
+    };
+    if (!content) {
+      toast.show('Content is Empty', { type: 'warning' });
+      return;
+    };
     if (!userId) {
       console.error('User not authenticated.');
       return;
@@ -128,68 +139,72 @@ const Rate: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerRow}>
-        <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.dateButton}>
-          <Text style={styles.dateText}>{formattedDate}</Text>
-        </TouchableOpacity>
+      <ImageBackground source={require('@/assets/images/Diary/back.png')} style={{ flex: 1 }} resizeMode="cover">
+        <View style={styles.container}>
+          <View style={styles.headerRow}>
+            <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.dateButton}>
+              <Text style={styles.dateText}>{formattedDate}</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={{ marginBottom: 30, marginLeft: 30 }} onPress={deleteEntry}>
-          <Feather name="trash-2" size={22} color="rgba(0, 0, 0, 0.47)" />
-        </TouchableOpacity>
+            <TouchableOpacity style={{ marginBottom: 4, marginLeft: 30 }} onPress={deleteEntry}>
+              <Feather name="trash-2" size={22} color="rgb(0, 0, 0)" />
+            </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => setEmojiModalVisible(true)}>
-          <Image source={getEmojiSrc(selectedMood)} style={styles.bigEmoji} />
-        </TouchableOpacity>
-      </View>
-
-      {showPicker && (
-        <DateTimePicker value={date} mode="date" display="calendar" onChange={onChange} />
-      )}
-
-      {/* Mood Emoji Modal */}
-      <Modal
-        visible={emojiModalVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setEmojiModalVisible(false)}
-      >
-        <Pressable style={styles.modalOverlay} onPress={() => setEmojiModalVisible(false)}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Choose your mood</Text>
-            <View style={styles.modalEmojiRow}>
-              {emojis.map((emoji) => (
-                <TouchableOpacity key={emoji.id} onPress={() => handleMoodSelect(emoji.id)}>
-                  <Image source={emoji.src} style={styles.modalEmoji} />
-                </TouchableOpacity>
-              ))}
-            </View>
+            <TouchableOpacity onPress={() => setEmojiModalVisible(true)}>
+              <Image source={getEmojiSrc(selectedMood)} style={styles.bigEmoji} />
+            </TouchableOpacity>
           </View>
-        </Pressable>
-      </Modal>
 
-      <TextInput
-        style={styles.titleInput}
-        placeholder="Title"
-        value={title}
-        onChangeText={setTitle}
-        placeholderTextColor="#999"
-      />
+          {showPicker && (
+            <DateTimePicker value={date} mode="date" display="calendar" onChange={onChange} />
+          )}
 
-      <TextInput
-        style={styles.contentInput}
-        placeholder="Write your diary entry..."
-        value={content}
-        onChangeText={setContent}
-        multiline
-        textAlignVertical="top"
-        placeholderTextColor="#999"
-      />
+          {/* Mood Emoji Modal */}
+          <Modal
+            visible={emojiModalVisible}
+            transparent
+            animationType="fade"
+            onRequestClose={() => setEmojiModalVisible(false)}
+          >
+            <Pressable style={styles.modalOverlay} onPress={() => setEmojiModalVisible(false)}>
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTitle}>Choose your mood</Text>
+                <View style={styles.modalEmojiRow}>
+                  {emojis.map((emoji) => (
+                    <TouchableOpacity key={emoji.id} onPress={() => handleMoodSelect(emoji.id)}>
+                      <Image source={emoji.src} style={styles.modalEmoji} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            </Pressable>
+          </Modal>
 
-      <TouchableOpacity style={styles.saveButton} onPress={saveEntry}>
-        <Text style={styles.saveButtonText}>Save Entry</Text>
-      </TouchableOpacity>
-    </View>
+          <TextInput
+            style={styles.titleInput}
+            placeholder="TITLE"
+            value={title}
+            onChangeText={setTitle}
+            autoCapitalize="characters"
+            placeholderTextColor="rgba(84, 82, 82, 0.7)"
+          />
+
+          <TextInput
+            
+            style={content==""? styles.contentInput : [styles.contentInput, {backgroundColor: 'rgba(224, 224, 224, 0.81)'}]}
+            placeholder="Write your diary entry..."
+            value={content}
+            onChangeText={setContent}
+            multiline
+            textAlignVertical="top"
+            placeholderTextColor="rgba(84, 82, 82, 0.7)"
+          />
+
+          <TouchableOpacity style={styles.saveButton} onPress={saveEntry}>
+            <Text style={styles.saveButtonText}>Save Entry</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
   );
 };
 
@@ -198,7 +213,7 @@ export default Rate;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e5f0ff',
+    backgroundColor: 'rgba(255, 255, 255, 0.18)',
     padding: 20,
   },
   headerRow: {
@@ -207,39 +222,43 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dateButton: {
+    marginTop: 5,
     padding: 10,
-    backgroundColor: '#d0e4ff',
-    borderRadius: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.37)',
+    borderRadius: 20,
     alignSelf: 'flex-start',
   },
   dateText: {
-    fontSize: 16,
-    color: '#333',
+    fontSize: 17,
+    color: 'rgba(119, 5, 110, 0.99)',
+    fontWeight: '800',
   },
   bigEmoji: {
     width: 50,
     height: 50,
-    marginLeft: 10,
+    marginLeft: 20,
+    marginRight: 5,
+
   },
   titleInput: {
-    fontSize: 18,
+    fontSize: 30,
     fontWeight: '600',
-    color: '#222',
+    color: 'rgb(255, 255, 255)',
     marginTop: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#bbb',
+    borderBottomWidth: 2,
+    borderColor: 'rgb(223, 223, 223)',
     paddingVertical: 8,
   },
   contentInput: {
     flex: 1,
     marginTop: 20,
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(227, 182, 182, 0.38)',
+    borderColor: 'rgb(223, 223, 223)',
+    borderWidth: 2,
     padding: 16,
     fontSize: 16,
-    color: '#333',
+    color: 'rgba(0, 0, 0, 0.96)',
     borderRadius: 12,
-    borderColor: '#ccc',
-    borderWidth: 1,
   },
   saveButton: {
     backgroundColor: '#4c8dff',
@@ -255,13 +274,13 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.3)',
+    backgroundColor: 'rgba(0, 0, 0, 0.28)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalContent: {
     backgroundColor: '#fff',
-    padding: 20,
+    padding: 15,
     borderRadius: 12,
     width: '80%',
     alignItems: 'center',
@@ -278,8 +297,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   modalEmoji: {
-    width: 40,
-    height: 40,
-    margin: 10,
+    width: 45,
+    height: 45,
+    margin: 12,
   },
 });

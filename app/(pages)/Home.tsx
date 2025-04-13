@@ -65,10 +65,10 @@ const Item = ({ item }: ItemProps) => (
   <View style={{width: 130, height: 150, borderRadius: 12, overflow: "hidden", elevation: 0, backgroundColor: "rgb(227, 212, 42)"}}>
     <Link href={item.link} asChild>
         <Pressable>
-          <Card style={{backgroundColor: "rgb(236, 254, 255)",}}>
+          <Card style={{backgroundColor: "rgb(205, 247, 250)",}}>
             <Card.Cover source={item.src} style={{height: 120, backgroundColor: "rgba(201, 9, 9, 0)", borderRadius: 0}}/>
             <Card.Content style={{alignItems: "center", top: "3%"}}>
-              <Text style={{fontSize: 15, fontWeight: 900}}>{item.name}</Text>
+              <Text style={{fontSize: 15, fontWeight: 900}  }>{item.name}</Text>
             </Card.Content> 
           </Card>         
         </Pressable>
