@@ -22,9 +22,6 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icons/logo.png",
-        "resizeMode": "contain",
-        "imageWidth": 150,
-        "imageHeight": 150,
         "backgroundColor": "#ffffff"
       }
     },

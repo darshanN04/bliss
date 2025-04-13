@@ -1,33 +1,74 @@
-import { StyleSheet, Text, Touchable, TouchableOpacity, View, Dimensions, Pressable, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Dimensions, ActivityIndicator, Alert } from 'react-native'
 import React from 'react'
 import { supabase } from '@/lib/supabase'
-import { Link, Redirect, useRouter } from 'expo-router'
+import { Redirect, useRouter } from 'expo-router'
 import { useAuth } from '@/providers/auth-provider';
 import { useToast } from 'react-native-toast-notifications';
 import { LinearGradient } from 'expo-linear-gradient';
-
 
 const { width, height } = Dimensions.get('window');
 
 const Profile = () => {
   const toast = useToast();
   const router = useRouter();
+  const { session, mounting } = useAuth();
+
   const handlePasswordChange = async () => {
-      router.push("/Passchange")
+    router.push("/Passchange")
   }
 
-  
   const handleTestSignOut = () => {
-      // Direct navigation and sign out
-      toast.show('Signing out...', { type: 'info' });
-      
-      setTimeout(async () => {
-        await supabase.auth.signOut();
-        router.replace('/Auth');
-      }, 500);
-    };
+    // Direct navigation and sign out
+    toast.show('Signing out...', { type: 'info' });
+    
+    setTimeout(async () => {
+      await supabase.auth.signOut();
+      router.replace('/Auth');
+    }, 500);
+  };
 
-  const {session, mounting } = useAuth();
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      "Delete Account",
+      "Are you sure you want to delete your account? This action cannot be undone.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => {
+            toast.show('Deleting account...', { type: 'danger' });
+            
+            setTimeout(async () => {
+              try {
+                // Call the Supabase RPC function to delete the user account
+                const { data, error } = await supabase.rpc('delete_user_account');
+                
+                if (error) throw error;
+                
+                if (data) {
+                  // Successful deletion
+                  toast.show('Account deleted successfully', { type: 'success' });
+                  // Sign out and redirect to Auth page
+                  await supabase.auth.signOut();
+                  router.replace('/Auth');
+                } else {
+                  throw new Error('Failed to delete account');
+                }
+              } catch (error) {
+                console.error('Error deleting account:', error);
+                toast.show('Failed to delete account. Please try again.', { type: 'error' });
+              }
+            }, 500);
+          }
+        }
+      ]
+    );
+  };
+  
   if(mounting) return <ActivityIndicator size="large" color="#0000ff" />
   if(!session) return <Redirect href="/Auth" />
   
@@ -50,22 +91,18 @@ const Profile = () => {
 
           <View style={styles.buttons}>
             <TouchableOpacity 
-                    // style={[styles.button, {marginTop: 20, backgroundColor: '#f44336'}]} 
                     onPress={handleTestSignOut}
                   >
                 <Text style={[styles.btntext]}>Sign Out Directly</Text>
             </TouchableOpacity>
           </View>
           
-          <View >
-            <TouchableOpacity
-              style={[styles.button, {marginTop: 20, backgroundColor: '#f44336'}]} >
-              <Text style={styles.btntext}>Delete Account</Text>
+          <View style={styles.buttons}>
+            <TouchableOpacity onPress={handleDeleteAccount}>
+              <Text style={[styles.btntext, {color: '#f44336'}]}>Delete Account</Text>
             </TouchableOpacity>
           </View>
         </View>
-
-
       </View>
     </LinearGradient>
   )
@@ -103,5 +140,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  
 })
