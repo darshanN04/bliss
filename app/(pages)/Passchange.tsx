@@ -30,9 +30,9 @@ const Passchange = () => {
   
     
     toast.show('Password changed successfully', { type: 'success' });
-    router.back();
+    router.push('/Auth');
     
-    try {
+    
       const { data, error } = await supabase.auth.updateUser({
         password: newPassword,
       });
@@ -42,10 +42,7 @@ const Passchange = () => {
         throw error;
       }
      
-    } catch (error) {
-      console.error('Password change failed:', (error as Error).message);
-      toast.show('Failed to change password. Please try again.', { type: 'error' });
-    } 
+    
   };
   
 

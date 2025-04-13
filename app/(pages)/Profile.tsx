@@ -19,7 +19,7 @@ const Profile = () => {
 
   const handleTestSignOut = () => {
     // Direct navigation and sign out
-    toast.show('Signing out...', { type: 'info' });
+    toast.show('Signed Out', { type: 'success' });
     
     setTimeout(async () => {
       await supabase.auth.signOut();

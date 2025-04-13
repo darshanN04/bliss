@@ -36,7 +36,7 @@ type DiaryEntry = {
 
 const DiaryList: React.FC = () => {
   const navigation = useNavigation()
-  const isFocused = useIsFocused() // Ensures refresh when coming back
+  const isFocused = useIsFocused() 
   const router = useRouter()
   const [entries, setEntries] = useState<DiaryEntry[]>([])
   const {session, mounting } = useAuth();
@@ -58,7 +58,10 @@ const DiaryList: React.FC = () => {
       if(isFocused) {
         fetchEntries();
       }
-    }, [isFocused, session?.user?.id])
+      if(isFocused){
+        fetchEntries();
+      }
+    }, [isFocused, session?.user.id]);
  return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
