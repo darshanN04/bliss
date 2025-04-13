@@ -1,24 +1,36 @@
 import { Pressable, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from 'expo-linear-gradient';
+import { supabase } from '@/lib/supabase';
 
-
-const jokes = [
-  {question: "Why don't skeletons fight each other?", punchline: "They don't have the guts."},
-  {question: "What do you call a fish wearing a crown?", punchline: "A kingfish."},
-  {question: "What do you call a pile of cats?", punchline: "A meowtain."},
-  {question: "What do you call a bear with no teeth?", punchline: "A gummy bear."},
-]
-
+type Joke = {
+  id: any;
+  question: string;
+  punchline: string;
+};
 
 const GroanZone = () => {
-
+  const [Data, setData] = useState<Joke[]>([]);
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const rotate=useSharedValue(0);
 
+  useEffect(() => {
+      const fetchJoke = async () => {
+        const { data, error } = await supabase.rpc('get_groan_zone');
+  
+        if (error) {
+          console.error('Error fetching joke:', error.message);
+        } else {
+          setData(data);
+        }
+      }
+    
+      fetchJoke();
+    }, [])
+  
   const flipCard = () => {
     rotate.value = withTiming(flipped ? 0 : 180, {duration: 300});
     setFlipped(!flipped);
@@ -38,46 +50,49 @@ const GroanZone = () => {
       <View style={styles.container}>
         <Text style={{position: "fixed", top: -150, fontSize: 30, fontWeight: "900", color:'white'}}>GroanZone</Text>
 
+        {Data.length > 0 ? (
         <View style={styles.cardContainer}>
-          {!flipped && (
+          {!flipped ? (
             <Pressable onPress={flipCard}>
               <Animated.View style={[styles.card, frontStyle]}>
-                  <Text>{jokes[index].question}</Text>
+                <Text>{Data[index].question}</Text>
               </Animated.View>
             </Pressable>
-          )}
-          {flipped && (
+          ) : (
             <Pressable onPress={flipCard}>
               <Animated.View style={[styles.card, backStyle]}>
-                <Text style={styles.text}>{jokes[index].punchline}</Text>
+                <Text style={styles.text}>{Data[index].punchline}</Text>
               </Animated.View>
             </Pressable>
           )}
         </View>
+      ) : (
+        <Text style={styles.text}>Loading...</Text>
+      )}
 
-        <View style={styles.navContainer}>
-          <TouchableOpacity
-            disabled={index === 0}
-            onPress={() => {
-              setFlipped(false);
-              setIndex((prev) => prev - 1);
-              rotate.value = withTiming(0, {duration: 0}); 
-            }}
-          >
-            <AntDesign name="leftsquareo" size={40} color={index === 0 ? "gray" : "black"} />
-          </TouchableOpacity>
+      <View style={styles.navContainer}>
+        <TouchableOpacity
+          disabled={index === 0}
+          onPress={() => {
+            setFlipped(false);
+            setIndex((prev) => prev - 1);
+            rotate.value = withTiming(0, { duration: 0 });
+          }}
+        >
+          <AntDesign name="arrowleft" size={40} color={index === 0 ? "gray" : "black"} />
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            disabled={index === jokes.length - 1}
-            onPress={() => {
-              setFlipped(false);
-              setIndex((prev) => prev + 1);
-              rotate.value = withTiming(0, {duration: 0});
-            }}
-          >
-            <AntDesign name="rightsquareo" size={40} color={index === jokes.length - 1 ? "gray" : "black"} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          disabled={index === Data.length - 1}
+          onPress={() => {
+            setFlipped(false);
+            setIndex((prev) => prev + 1);
+            rotate.value = withTiming(0, { duration: 0 });
+          }}
+        >
+          <AntDesign name="arrowright" size={40} color={index === Data.length - 1 ? "gray" : "black"} />
+        </TouchableOpacity>
+      </View>
 
       </View>
     </LinearGradient>
