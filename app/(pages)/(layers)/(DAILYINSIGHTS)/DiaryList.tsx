@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-  Image } from 'react-native'
+import {  View,  Text,  FlatList,  TouchableOpacity,  StyleSheet,  Image } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { useRouter } from 'expo-router'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/providers/auth-provider';
 import { Int32 } from 'react-native/Libraries/Types/CodegenTypes'
+
 type Emoji = {
   id: Int32;
   src: any;
@@ -80,6 +75,7 @@ const DiaryList: React.FC = () => {
           <TouchableOpacity style={styles.card} onPress={() => router.push({
                 pathname: '/Rate',
                 params: {
+                id: item.diary_entry_id,
                 date: item.entry_date,
                 title: item.title,
                 content: item.entry,

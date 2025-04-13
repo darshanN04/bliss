@@ -36,6 +36,7 @@ const emojis: Emoji[] = [
 
 const Rate: React.FC = () => {
   const params = useLocalSearchParams();
+
   const [selectedMood, setSelectedMood] = useState<string>((params.mood as string) || '0');
   const [title, setTitle] = useState<string>((params.title as string) || '');
   const [content, setContent] = useState<string>((params.content as string) || '');
@@ -46,7 +47,6 @@ const Rate: React.FC = () => {
   const router = useRouter();
 
   const formattedDate = date.toDateString();
-
   const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
     if (Platform.OS === 'android') setShowPicker(false);
     if (selectedDate) setDate(selectedDate);
@@ -67,20 +67,35 @@ const Rate: React.FC = () => {
       console.error('User not authenticated.');
       return;
     }
-
-    const { error } = await supabase.rpc('insert_diary_entry_and_daily_insight', {
-      entry_date: formattedDate,
-      entry_emotion: parseInt(selectedMood), // 👈 convert ID to number if needed
-      entry_title: title,
-      entry_text: content,
-      entry_user_id: userId,
-    });
-
-    if (error) {
-      console.error('Error saving diary entry:', error.message);
-    } else {
-      router.push('..');
+    if(!params.id){
+      const { error } = await supabase.rpc('insert_diary_entry_and_daily_insight', {
+        entry_date: formattedDate,
+        entry_emotion: parseInt(selectedMood),
+        entry_title: title,
+        entry_text: content,
+        entry_user_id: userId,
+      });
+      if (error) {
+        console.error('Error saving diary entry:', error.message);
+      } else {
+        router.push('..');
+      }
     }
+    else{
+      const { error } = await supabase.rpc('update_diary_entry_by_id', {
+        entry_id: params.id,
+        new_date: formattedDate,
+        new_emotion: parseInt(selectedMood),
+        new_entry: content,
+        new_title: title,
+      });
+      if (error) {
+        console.error('Error updating diary entry:', error.message);
+      } else {
+        router.push('..');
+      }
+    }
+
   };
 
   const deleteEntry = async () => {
