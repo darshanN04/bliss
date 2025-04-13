@@ -51,7 +51,7 @@ const Item = ({ item }: ItemProps) => (
   <View >
     <Link href={item.link} asChild>
       <Pressable>
-        <Card style={[styles.wordplayContainer, {backgroundColor: 'rgb(205, 247, 250)',}]}>
+        <Card style={[styles.wordplayContainer, {backgroundColor: 'rgb(217, 250, 253)',}]}>
           <Card.Content style={{alignItems: "center", top: "3%"}}>
             <Text style={{fontSize: 20, fontWeight: 900, textAlign: "center", color: "rgb(6, 110, 6)"}}>{item.name}</Text>
           </Card.Content> 

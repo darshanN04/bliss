@@ -109,7 +109,7 @@ const Rate: React.FC = () => {
     }
 
   };
-  console.log(params)
+  // console.log(params)
   const deleteEntry = async () => {
     if (!params.id) return;
     Alert.alert(
@@ -140,6 +140,7 @@ const Rate: React.FC = () => {
 
   return (
       <ImageBackground source={require('@/assets/images/Diary/back.png')} style={{ flex: 1 }} resizeMode="cover">
+        <View style={styles.overlay} />
         <View style={styles.container}>
           <View style={styles.headerRow}>
             <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.dateButton}>
@@ -236,6 +237,7 @@ const styles = StyleSheet.create({
   bigEmoji: {
     width: 50,
     height: 50,
+    resizeMode: 'contain',
     marginLeft: 20,
     marginRight: 5,
 
@@ -279,11 +281,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: 'rgb(236, 227, 216)',
+    borderColor: 'rgba(229, 218, 218, 0.95)',
+    borderWidth: 2,
     padding: 15,
     borderRadius: 12,
     width: '80%',
     alignItems: 'center',
+    maxHeight: '80%',
   },
   modalTitle: {
     fontSize: 18,
@@ -295,10 +300,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
+    paddingBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   modalEmoji: {
     width: 45,
     height: 45,
     margin: 12,
+    resizeMode: 'contain',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject, // fills the background
+    backgroundColor: 'rgba(0, 0, 0, 0.2)', // adjust alpha for more or less fade
+    zIndex: 0, // make sure it's behind content
   },
 });
