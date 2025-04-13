@@ -14,6 +14,7 @@ const Stopwatch: React.FC = () => {
     require("@/assets/songs/meditation/zither.mp3"),
     require("@/assets/songs/meditation/song.mp3"),
   ];
+  const songNames = ["Flute", "Zither", "Serenity"];
   useEffect(() => {
     let interval: NodeJS.Timeout | undefined;
     if (running) {
@@ -105,7 +106,21 @@ const Stopwatch: React.FC = () => {
           </Pressable>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => setRunning(!running)}
+            onPress={async () => {
+              if (running) {
+                setRunning(false);
+                if (musicPlaying) {
+                  await stopSound();
+                  setMusicPlaying(false);
+                }
+              } else {
+                setRunning(true);
+                if (!musicPlaying) {
+                  await playSound();
+                  setMusicPlaying(true);
+                }
+              }
+            }}
           >
             <Text style={styles.buttonText}>{running ? "Stop" : "Start"}</Text>
           </TouchableOpacity>
@@ -131,7 +146,7 @@ const Stopwatch: React.FC = () => {
                   setSelectedSong(index);
                 }}
               >
-                <Text style={styles.songButtonText}>Song {index + 1}</Text>
+                <Text style={styles.songButtonText}>{songNames[index]}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -173,7 +188,7 @@ const styles = StyleSheet.create({
   },
   musicButton: {
     position: "absolute",
-    bottom: 180,
+    bottom: 140,
     right: 30,
   },
   musicIcon: {

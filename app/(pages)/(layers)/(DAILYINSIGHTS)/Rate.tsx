@@ -8,16 +8,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation } from '@react-navigation/native'
 import { useRouter } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router'
-
+import { Feather } from '@expo/vector-icons'
+import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/providers/auth-provider'
 
 
 const emojis: string[] = ['😄', '😊', '😐', '😔', '😢', '😠']
 
 type DiaryEntry = {
+  id: any;
   date: string
   title: string
   content: string
-  mood: string
+  mood: any
 }
 
 const Rate: React.FC = () => {
@@ -30,6 +33,7 @@ const Rate: React.FC = () => {
   const [showPicker, setShowPicker] = useState<boolean>(false)
   const [emojiModalVisible, setEmojiModalVisible] = useState<boolean>(false)
   const isEditing = !!params.title // or any field
+  const { session } = useAuth()
 
   const router = useRouter()
 
@@ -46,26 +50,40 @@ const Rate: React.FC = () => {
   }
 
   const saveEntry = async () => {
-    const newEntry: DiaryEntry = {
-      date: date.toISOString().split('T')[0],
-      title,
-      content,
-      mood: selectedMood,
+    const userId = session?.user?.id;
+    if (!userId) {
+      console.error('User not authenticated.');
+      return;
     }
 
-    const existing = await AsyncStorage.getItem('diaryEntries')
-    const entries: DiaryEntry[] = existing ? JSON.parse(existing) : []
-    entries.push(newEntry)
+    const { error } = await supabase.rpc('insert_diary_entry_and_daily_insight', {
+      entry_date: formattedDate,
+      entry_emotion: selectedMood,
+      entry_title: title,
+      entry_text: content,
+      entry_user_id: userId,
+    });
 
-    await AsyncStorage.setItem('diaryEntries', JSON.stringify(entries))
-    router.push("..") // Type-safe nav
+    if (error) {
+      console.error('Error saving diary entry:', error.message);
+      // Optionally display an error message to the user
+    } else {
+      router.push('..'); // Navigate back on success
+    }
+  };
+
+
+  const deleteEntry = async () => {
+    const {data, error} = await supabase.rpc('delete_diary_entry_and_insight');
   }
-
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
         <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.dateButton}>
           <Text style={styles.dateText}>{formattedDate}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{marginBottom: 30, marginLeft: 30}} onPress={()=> deleteEntry()}>
+          <Feather name="trash-2" size={22} color="rgba(0, 0, 0, 0.47)" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setEmojiModalVisible(true)}>
           <Text style={styles.bigEmoji}>{selectedMood}</Text>

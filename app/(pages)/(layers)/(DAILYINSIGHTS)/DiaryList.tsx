@@ -10,33 +10,41 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { useRouter } from 'expo-router'
+import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/providers/auth-provider';
 
 
 type DiaryEntry = {
-  date: string
-  title: string
-  content: string
-  mood: string
+  id: any;
+  date: string;
+  title: string;
+  content: string;
+  mood: string;
 }
 
 const DiaryList: React.FC = () => {
-  const [entries, setEntries] = useState<DiaryEntry[]>([])
   const navigation = useNavigation()
   const isFocused = useIsFocused() // Ensures refresh when coming back
   const router = useRouter()
+  const [entries, setEntries] = useState<DiaryEntry[]>([])
+  const {session, mounting } = useAuth();
+  
 
   useEffect(() => {
-    const loadEntries = async () => {
-      const data = await AsyncStorage.getItem('diaryEntries')
-      if (data) {
-        setEntries(JSON.parse(data))
+      const fetchEntries = async () => {
+        const { data, error } = await supabase.rpc('get_user_diary_entries', {
+          user_uuid: session?.user.id,
+        }); // Replace with your function name
+        console.log('Fetched entries:', data);
+        if (error) {
+          console.error('Error fetching quotes:', error.message);
+        } else {
+          setEntries(data);
+        }
       }
-    }
-
-    if (isFocused) {
-      loadEntries()
-    }
-  }, [isFocused])
+    
+      fetchEntries();
+    }, []);
 
   return (
     <View style={styles.container}>
@@ -76,7 +84,7 @@ const DiaryList: React.FC = () => {
         setEntries([])
         }
         }>
-        <Text style={{ color: 'blue', textAlign: 'center', marginTop: 20 }}>Delete All Entries</Text>
+        <Text style={{ color: 'blue', textAlign: 'center', marginTop: 20 }}>Delete selected Entries</Text>
       </TouchableOpacity>
     </View>
   )

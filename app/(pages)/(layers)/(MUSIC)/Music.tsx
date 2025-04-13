@@ -1,62 +1,32 @@
 import { FlatList, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'expo-router'
 import { Card } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
+import { supabase } from '@/lib/supabase';
 
-type data = {
+type Songs = {
   id: string,
   name: string,
   link: any;
 }
 
-const Data: data[] = [
-  {
-    id: "1",
-    name: "Study Music",
-    link:"https://www.youtube.com/watch?v=sjkrrmBnpGE",
-  },
-  {
-    id: "2",
-    name: "Isha Playlist",
-    link: "https://www.youtube.com/watch?v=5O-NomO_4_8"
-  },
-  {
-    id: "3",
-    name: "Meditate alone",
-    link:"https://www.youtube.com/watch?v=YB-nFu50R1M"
-  },
-  {
-    id: "4",
-    name: "Memory Reboot",
-    link: "https://youtu.be/q5P4ZOEs8so"
-  },
-  {
-    id: "5",
-    name: "English Breakdown",
-    link: "https://www.youtube.com/watch?v=ujAXBVfAlUY&list=PL8TV4m3E3io5A2TqCj2k1970YTBRuyWvT"
-  },
-]
-type ItemProps = {
-  item: data,
-  onPress: () => void,
-  backgroundColor: string,
-  textColor: string,
-}
-const Item = ({ item }: ItemProps) => (
-    <SafeAreaView style={{marginBottom: 30}}>
-      <Pressable>
-        <Link href={item.link}>
-          <Card style={{backgroundColor: "rgb(236, 254, 255)",width: "100%", height: 100, borderRadius: 20}}>
-            <Card.Content style={{alignItems: "center", top: "3%", justifyContent: "center"}}>
-              <Text style={{fontSize: 20,color: "black", fontWeight: 900, paddingTop: 15}}>{item.name}</Text>
-            </Card.Content> 
-          </Card> 
-        </Link>
-      </Pressable>
-    </SafeAreaView>
-)
 const Music = () => {
+  const [Data, setData] = useState<Songs[]>([]);
+  useEffect(() => {
+        const fetchMusic = async () => {
+          const { data, error } = await supabase.rpc('get_music'); // Replace with your function name
+    
+          if (error) {
+            console.error('Error fetching songs:', error.message);
+          } else {
+            // console.log('Fetched Asanas:', data); // ✅ Console confirmation
+            setData(data);
+          }
+        };
+    
+        fetchMusic();
+      }, []);
   return (
     <LinearGradient
       colors={['rgb(168, 213, 186)', 'rgb(255, 216, 182)']} //light green and light orange
@@ -67,18 +37,17 @@ const Music = () => {
         </View>
         <FlatList
           data={Data}
-          keyExtractor={item => item.id}
-          style={{paddingTop: 20}}
-          renderItem={({ item }) => 
-            <Item 
-              item={item}
-              onPress={() => {}} 
-              backgroundColor="rgb(227, 212, 42)" 
-              textColor="black"
-            />
-          }
-        />
-      </SafeAreaView>
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+
+            <Pressable style={styles.card}>
+              <Link href={item.link}>
+              <Text style={styles.name}>{item.name}</Text>
+              </Link>
+            </Pressable>
+          )}
+        />  
+        </SafeAreaView>
     </LinearGradient>
   )
 }
@@ -102,5 +71,25 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
     color: "white",
+  },
+  card: {
+    backgroundColor:'white',
+    padding: 10,
+    borderRadius: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 15,
+    marginTop: 10,
+    marginBottom: 10,
+    marginRight: 40,
+    marginLeft: 40,
+  },
+  name: {
+    marginTop: 10,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 })

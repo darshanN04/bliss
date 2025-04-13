@@ -14,6 +14,7 @@ type Asana = {
   benefit: string;
   target: string;
   src: any;
+  url: any;
 };
 
 const Advanced: React.FC = () => {
@@ -64,7 +65,7 @@ const Advanced: React.FC = () => {
                   colors={['rgb(255, 255, 255)', 'rgb(255, 255, 255)']}
                   style={{ flex: 1 }}>
                   <Text style={styles.modalText}>{asana.name}</Text>
-                  <Image source={asana.src} style={styles.image} />
+                  <Image source={{uri: asana.src}} style={styles.image} />
                   <View style={styles.imageGap} />
                   <ScrollView contentContainerStyle={styles.modalContent}>
                     <Text style={styles.modalTextOverlay}>{"DESCRIPTION"}</Text>
