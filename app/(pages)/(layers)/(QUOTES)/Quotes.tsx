@@ -1,54 +1,32 @@
 import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
+import { supabase } from '@/lib/supabase';
 
 // Define the type for quotes data
 type QuotesData = {
-  id: string,
+  id: any;
   text: string;
 };
 
-// Sample Data
-const Data: QuotesData[] = [
-  {
-    id: '1',
-    text:"\"The only limit to our realization of tomorrow is our doubts of today.\"",
-  },
-  {
-    id: '2',
-    text:  "\"Do what you can, with what you have, where you are.\"",
-  },
-  {
-    id: '3',
-    text:"\"Success is not final, failure is not fatal: it is the courage to continue that counts.\"",
-  },
-  {
-    id: '4',
-    text:  "\"Believe you can and you're halfway there.\"",
-  },
-  {
-    id: '5',
-    text:  "\"You\'re Awesome.\"",
-  },
-];
-
-// Define Props for QuotesCard Component
-type QuotesProps = {
-  item: QuotesData;
-  onPress: () => void;
-  backgroundColor: string;
-  textColor: string;
-};
-
-const QuotesCard = ({ item, backgroundColor, textColor } : QuotesProps) => {
-  return (
-    <View style={[styles.card]}> 
-      <Text style={[styles.text, { color: textColor }]}>{item.text}</Text>
-    </View>
-  );
-};
-
 const Quotes = () => {
+  const [Data, setData] = useState<QuotesData[]>([]);
+
+  useEffect(() => {
+    const fetchQuotes = async () => {
+      const { data, error } = await supabase.rpc('get_quotes'); // Replace with your function name
+
+      if (error) {
+        console.error('Error fetching quotes:', error.message);
+      } else {
+        setData(data);
+      }
+    }
+  
+    fetchQuotes();
+  }, [])
+  
+
   return (
     <LinearGradient
       colors={['rgb(168, 213, 186)', 'rgb(255, 216, 182)']} //light green and light orange
@@ -66,13 +44,10 @@ const Quotes = () => {
             horizontal
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <QuotesCard 
-                item={item} 
-                onPress={() => console.log(item.id)} 
-                backgroundColor="#f9c2ff"
-                textColor="rgb(3, 3, 3)"
-              />
-            )}
+              <View style={[styles.card]}> 
+                <Text style={[styles.text, { color: "black" }]}>{item.text}</Text>
+              </View>
+            )}  
             showsHorizontalScrollIndicator={false}
           />
         </View>
