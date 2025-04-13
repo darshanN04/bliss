@@ -1,27 +1,35 @@
 import { Pressable, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from 'expo-linear-gradient';
+import { supabase } from '@/lib/supabase';
 
-
-const clues =[
-  {question: "What comes once in a minute, twice in a moment, but never in a thousand years?", answer: "The letter 'm'"},
-  {question: "What has keys but can't open locks?", answer: "A piano"},
-  {question: "What has a head, a tail, is brown, and has no legs?", answer: "A penny"},
-  {question: "What has a neck but no head?", answer: "A bottle"},
-  {question: "What has a thumb and four fingers but is not alive?", answer: "A glove"},
-  {question: "What has a heart that doesn't beat?", answer: "An artichoke"},
-  {question: "What has a bark but no bite?", answer: "A tree"},
-  {question: "What has a foot but no legs?", answer: "A ruler"},
-  {question: "What has a bed but never sleeps?", answer: "A river"},
-]
+type Clue = {
+  id: any;
+  question: string;
+  answer: string;
+};
 
 const Crack = () => {
-
+  const [Data, setData] = useState<Clue[]>([]);
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const rotate=useSharedValue(0);
+
+  useEffect(() => {
+    const fetchClue = async () => {
+      const { data, error } = await supabase.rpc('get_crack_the_clue');
+
+      if (error) {
+        console.error('Error fetching clue:', error.message);
+      } else {
+        setData(data);
+      }
+    }
+  
+    fetchClue();
+  }, [])
 
   const flipCard = () => {
     rotate.value = withTiming(flipped ? 0 : 180, {duration: 200});
@@ -36,23 +44,26 @@ const Crack = () => {
       style={{ flex: 1 }}>
       <View style={styles.container}>
         <Text style={{position: "fixed", top: -150, fontSize: 30, fontWeight: "900",color:'white'}}>Crack The Clue</Text>
-
-        <View style={styles.cardContainer}>
-          {!flipped && (
-            <Pressable onPress={flipCard}>
-              <Animated.View style={[styles.card, frontStyle]}>
-                  <Text>{clues[index].question}</Text>
-              </Animated.View>
-            </Pressable>
-          )}
-          {flipped && (
-            <Pressable onPress={flipCard}>
-              <Animated.View style={[styles.card, backStyle]}>
-                <Text style={styles.text}>{clues[index].answer}</Text>
-              </Animated.View>
-            </Pressable>
-          )}
-        </View>
+        
+        {Data.length > 0 ? (
+          <View style={styles.cardContainer}>
+            {!flipped ? (
+              <Pressable onPress={flipCard}>
+                <Animated.View style={[styles.card, frontStyle]}>
+                  <Text>{Data[index].question}</Text>
+                </Animated.View>
+              </Pressable>
+            ) : (
+              <Pressable onPress={flipCard}>
+                <Animated.View style={[styles.card, backStyle]}>
+                  <Text style={styles.text}>{Data[index].answer}</Text>
+                </Animated.View>
+              </Pressable>
+            )}
+          </View>
+        ) : (
+          <Text style={styles.text}>Loading...</Text>
+        )}
 
         <View style={styles.navContainer}>
           <TouchableOpacity
@@ -60,21 +71,21 @@ const Crack = () => {
             onPress={() => {
               setFlipped(false);
               setIndex((prev) => prev - 1);
-              rotate.value = withTiming(0, {duration: 0}); 
+              rotate.value = withTiming(0, { duration: 0 });
             }}
           >
             <AntDesign name="arrowleft" size={40} color={index === 0 ? "gray" : "black"} />
           </TouchableOpacity>
 
           <TouchableOpacity
-            disabled={index === clues.length - 1}
+            disabled={index === Data.length - 1}
             onPress={() => {
               setFlipped(false);
               setIndex((prev) => prev + 1);
-              rotate.value = withTiming(0, {duration: 0});
+              rotate.value = withTiming(0, { duration: 0 });
             }}
           >
-            <AntDesign name="arrowright" size={40} color={index === clues.length - 1 ? "gray" : "black"} />
+            <AntDesign name="arrowright" size={40} color={index === Data.length - 1 ? "gray" : "black"} />
           </TouchableOpacity>
         </View>
 

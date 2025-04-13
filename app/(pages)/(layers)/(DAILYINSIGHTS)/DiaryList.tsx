@@ -44,15 +44,19 @@ const DiaryList: React.FC = () => {
 
   useEffect(() => {
       const fetchEntries = async () => {
+        if (!session?.user?.id) return;
         const { data, error } = await supabase.rpc('get_user_diary_entries', {
-          user_uuid: session?.user.id,
-        }); // Replace with your function name
+          user_uuid: session.user.id,
+        });
         console.log('Fetched entries:', data);
         if (error) {
           console.error('Error fetching quotes:', error.message);
         } else {
           setEntries(data);
         }
+      };
+      if(isFocused) {
+        fetchEntries();
       }
       if(isFocused){
         fetchEntries();

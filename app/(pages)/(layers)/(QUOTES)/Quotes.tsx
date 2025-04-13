@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase';
 
 // Define the type for quotes data
 type QuotesData = {
-  id: string,
+  id: any;
   text: string;
 };
 

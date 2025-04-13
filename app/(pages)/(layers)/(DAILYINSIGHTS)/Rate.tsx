@@ -9,6 +9,7 @@ import {
   Modal,
   Pressable,
   Image,
+  Alert,
 } from 'react-native';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useRouter, useLocalSearchParams } from 'expo-router';
@@ -99,14 +100,31 @@ const Rate: React.FC = () => {
   };
   console.log(params)
   const deleteEntry = async () => {
-    const { error } = await supabase.rpc('delete_diary_entry_and_insight',{
-      diary_id_input: params.id,
-    });
-    if (error) {
-      console.error('Error deleting diary entry:', error.message);
-    } else {
-      router.push('..');
-    }
+    if (!params.id) return;
+    Alert.alert(
+      'Delete Entry',
+      "Are you sure?",
+      [
+        {
+          text:"Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            const { error } = await supabase.rpc('delete_diary_entry_and_insight', {
+              diary_id_input: params.id,
+            });
+            if (error) {
+              console.error('Error deleting diary entry:', error.message);
+            } else {
+              router.push('..');
+            }
+          },
+        }
+      ]
+    );
   };
 
   return (

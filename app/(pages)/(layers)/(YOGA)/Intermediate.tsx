@@ -13,7 +13,7 @@ type Asana = {
   precaution: string;
   benefit: string;
   target: string;
-  src: any;
+  src: string;
   url: string;
 };
 

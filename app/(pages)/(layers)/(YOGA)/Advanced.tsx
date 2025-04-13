@@ -13,8 +13,8 @@ type Asana = {
   precaution: string;
   benefit: string;
   target: string;
-  src: any;
-  url: any;
+  src: string;
+  url: string;
 };
 
 const Advanced: React.FC = () => {
@@ -40,7 +40,9 @@ const Advanced: React.FC = () => {
       style={{ flex: 1 }}>
       <SafeAreaView style={styles.container}>
           <View style={{alignItems: "center", marginBottom: "4%"}}>
-                    <Text style={{fontSize: 20, fontWeight: 900, color:'white', textShadowColor: 'black', textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 5}}>ADVANCED PRACTITIONERS</Text>
+            <Text style={{fontSize: 20, fontWeight: 900, color:'white', textShadowColor: 'black', textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 5}}>
+              ADVANCED PRACTITIONERS
+            </Text>
           </View>
          <FlatList
             data={asanas}
@@ -65,7 +67,7 @@ const Advanced: React.FC = () => {
                   colors={['rgb(255, 255, 255)', 'rgb(255, 255, 255)']}
                   style={{ flex: 1 }}>
                   <Text style={styles.modalText}>{asana.name}</Text>
-                  <Image source={{uri: asana.src}} style={styles.image} />
+                  <Image source={{ uri: asana.src }} style={styles.image} />
                   <View style={styles.imageGap} />
                   <ScrollView contentContainerStyle={styles.modalContent}>
                     <Text style={styles.modalTextOverlay}>{"DESCRIPTION"}</Text>
@@ -95,7 +97,8 @@ const Advanced: React.FC = () => {
                         <Text key={index} style={styles.listItem}>
                           {`\u2022`} {line.trim()}{'\n'}
                         </Text>
-                      ))}</Text>
+                      ))}
+                    </Text>
                   </ScrollView>
                   <Pressable style={styles.closeButton} onPress={() => setModalVisible(null)}>
                     <Text style={styles.buttonText}>Close</Text>

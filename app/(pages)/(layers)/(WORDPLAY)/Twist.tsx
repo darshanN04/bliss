@@ -1,20 +1,32 @@
 import { FlatList, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { AntDesign } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { supabase } from '@/lib/supabase';
 
-const twisters =[
-  {text: "Peter Piper picked a peck of pickled peppers.\nA peck of pickled peppers Peter Piper picked.\nIf Peter Piper picked a peck of pickled peppers,\nWhere’s the peck of pickled peppers Peter Piper picked?"},
-  {text: "How much wood would a woodchuck chuck\nIf a woodchuck could chuck wood?\nHe would chuck as much wood\nAs a woodchuck would\nIf a woodchuck could chuck wood."},
-  {text: "I scream, you scream, we all scream for ice cream."},
-  {text: "She sells seashells by the seashore."},
-  {text: "Fuzzy Wuzzy was a bear.\nFuzzy Wuzzy had no hair.\nFuzzy Wuzzy wasn’t very fuzzy, was he?"},
-  {text: "How can a clam cram in a clean cream can?"},
-  {text: "I saw Susie sitting in a shoe shine shop.\nWhere she sits she shines, and where she shines she sits."},  
-]
+type Twisters = {
+  id: any;
+  text: string;
+};
 
 const Twist = () => {
   const [index, setIndex] = useState(0);
+  const [Data, setData] = useState<Twisters[]>([]);
+  
+  useEffect(() => {
+    const fetchTwisters = async () => {
+      const { data, error } = await supabase.rpc('get_twisters'); // Replace with your function name
+
+      if (error) {
+        console.error('Error fetching quotes:', error.message);
+      } else {
+        setData(data);
+      }
+    }
+  
+    fetchTwisters();
+  }, [])
+
   return (
     <LinearGradient
       colors={['rgb(168, 213, 186)', 'rgb(255, 216, 182)']} //light green and light orange
@@ -23,23 +35,30 @@ const Twist = () => {
         <View style={styles.header}>
           <Text style={{position: "fixed", top: -180, fontSize: 30, fontWeight: "900", color: "white"}}>Twist it up</Text>
         </View>
-        <View style={styles.cardContainer}>
-          <View style={styles.card}>
-            <Text>{twisters[index].text}</Text>
+        {Data.length > 0 ? (
+          <View style={styles.cardContainer}>
+            <View style={styles.card}>
+              <Text style={styles.text}>{Data[index].text}</Text>
+            </View>
           </View>
-        </View>
+        ) : (
+          <Text style={styles.text}>Loading...</Text>
+        )}
+
+        {/* Navigation */}
         <View style={styles.navContainer}>
           <TouchableOpacity
             disabled={index === 0}
-            onPress={()=> setIndex((prev) => prev - 1)}>
-            <AntDesign name="leftsquareo" size={40} color={index === 0 ? "gray" : "black"} />
+            onPress={() => setIndex((prev) => prev - 1)}
+          >
+            <AntDesign name="leftsquareo" size={40} color={index === 0 ? 'gray' : 'black'} />
           </TouchableOpacity>
+
           <TouchableOpacity
-            disabled={index === twisters.length - 1}
-            onPress={() => {
-              setIndex((prev) => prev + 1);
-            }}>
-            <AntDesign name="rightsquareo" size={40} color={index === twisters.length - 1 ? "gray" : "black"} />
+            disabled={index === Data.length - 1}
+            onPress={() => setIndex((prev) => prev + 1)}
+          >
+            <AntDesign name="rightsquareo" size={40} color={index === Data.length - 1 ? 'gray' : 'black'} />
           </TouchableOpacity>
         </View>
       </View>
@@ -80,7 +99,7 @@ const styles = StyleSheet.create({
   
   },
   text:{
-    fontSize: 20,
+    fontSize: 15,
     textAlign: "center",
     fontWeight: "bold",
   },
