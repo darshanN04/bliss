@@ -12,19 +12,19 @@ type pageData={
 const Data: pageData[] = [
   {
     id: "1",
-    name: "Beginner",
+    name: "BEGINNER",
     src: "none",
     link: "/(layers)/(YOGA)/Beginner"
   },
   {
     id: "2",
-    name: "Intermediate",
+    name: "INTERMEDIATE",
     src: "none",
     link: "/(layers)/(YOGA)/Intermediate"
   },
   {
     id: "3",
-    name: "Advanced",
+    name: "ADVANCED",
     src: "none",
     link: "/(layers)/(YOGA)/Advanced"
   }
@@ -92,16 +92,21 @@ const styles = StyleSheet.create({
   box:{
     height: 140,
     width: "100%",
-    backgroundColor: "rgba(228, 233, 204, 0.8)", 
+    backgroundColor: "rgba(245, 245, 220, 0.81)", 
     justifyContent: "center", 
     alignItems: "center",
     borderRadius: 7,
     margin: 10,
   },
    boxtext:{
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "rgb(0, 0, 0)"
+    fontSize: 25,
+    fontWeight: "900",
+    color: "rgb(221, 210, 210)",
+    textAlign: "center",
+    textShadowColor: "rgb(0, 0, 0)",
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
+    padding: 5,
    }
   
 });
