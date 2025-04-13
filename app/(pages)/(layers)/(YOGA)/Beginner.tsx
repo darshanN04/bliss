@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, Modal, Pressable, FlatList, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { supabase } from '@/lib/supabase'; // Adjust path as needed
+import { supabase} from '@/lib/supabase'; // Adjust path as needed
 
 type Asana = {
   id: string;
