@@ -11,6 +11,48 @@ type Joke = {
   punchline: string;
 };
 
+const renderStyledText = (question: string) => {
+  const regex = /\[red\](.*?)\[\/red\]/g;
+  const parts: JSX.Element[] = [];
+  let lastIndex = 0;
+  let match;
+  let key = 0;
+
+  while ((match = regex.exec(question)) !== null) {
+    const start = match.index;
+    const end = regex.lastIndex;
+    const before = question.slice(lastIndex, start);
+    const styledText = match[1];
+
+    if (before) {
+      parts.push(
+        <Text key={key++} style={{ color: 'black' }}>
+          {before}
+        </Text>
+      );
+    }
+
+    parts.push(
+      <Text key={key++} style={{ color: 'red' }}>
+        {styledText}
+      </Text>
+    );
+
+    lastIndex = end;
+  }
+
+  if (lastIndex < question.length) {
+    parts.push(
+      <Text key={key++} style={{ color: 'black' }}>
+        {question.slice(lastIndex)}
+      </Text>
+    );
+  }
+
+  return parts;
+};
+
+
 const Brain = () => {
   const [Data, setData] = useState<Joke[]>([]);
   const [index, setIndex] = useState(0);
@@ -19,7 +61,7 @@ const Brain = () => {
 
   useEffect(() => {
   const fetchJoke = async () => {
-    const { data, error } = await supabase.rpc('get_groan_zone');
+    const { data, error } = await supabase.rpc('get_brain_teaser');
 
     if (error) {
       console.error('Error fetching joke:', error.message);
@@ -55,7 +97,9 @@ const Brain = () => {
           {!flipped ? (
             <Pressable onPress={flipCard}>
               <Animated.View style={[styles.card, frontStyle]}>
-                <Text>{Data[index].question}</Text>
+                <Text style={styles.text}>
+                  {renderStyledText(Data[index].question)}
+                </Text>
               </Animated.View>
             </Pressable>
           ) : (
