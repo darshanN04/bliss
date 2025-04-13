@@ -97,9 +97,11 @@ const Rate: React.FC = () => {
     }
 
   };
-
+  console.log(params)
   const deleteEntry = async () => {
-    const { error } = await supabase.rpc('delete_diary_entry_and_insight');
+    const { error } = await supabase.rpc('delete_diary_entry_and_insight',{
+      diary_id_input: params.id,
+    });
     if (error) {
       console.error('Error deleting diary entry:', error.message);
     } else {
