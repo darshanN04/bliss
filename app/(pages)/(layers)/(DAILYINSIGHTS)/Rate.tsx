@@ -1,53 +1,65 @@
-// Rate.tsx
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, TextInput, TouchableOpacity, Platform, Modal, Pressable,
-} from 'react-native'
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useNavigation } from '@react-navigation/native'
-import { useRouter } from 'expo-router'
-import { useLocalSearchParams } from 'expo-router'
-import { Feather } from '@expo/vector-icons'
-import { supabase } from '@/lib/supabase'
-import { useAuth } from '@/providers/auth-provider'
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Platform,
+  Modal,
+  Pressable,
+  Image,
+} from 'react-native';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+import { Feather } from '@expo/vector-icons';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/providers/auth-provider';
 
+type Emoji = {
+  id: string;
+  src: any;
+};
 
-const emojis: string[] = ['😄', '😊', '😐', '😔', '😢', '😠']
-
-type DiaryEntry = {
-  id: any;
-  date: string
-  title: string
-  content: string
-  mood: any
-}
+const emojis: Emoji[] = [
+  { id: '0', src: require('@/assets/icons/ryd.png') },
+  { id: '1', src: require('@/assets/icons/Angry.png') },
+  { id: '2', src: require('@/assets/icons/Anxious.png') },
+  { id: '3', src: require('@/assets/icons/Blush.png') },
+  { id: '4', src: require('@/assets/icons/Bored.png') },
+  { id: '5', src: require('@/assets/icons/Cry.png') },
+  { id: '6', src: require('@/assets/icons/Happy.png') },
+  { id: '7', src: require('@/assets/icons/Loved.png') },
+  { id: '8', src: require('@/assets/icons/Sad.png') },
+  { id: '9', src: require('@/assets/icons/Neutral.png') },
+];
 
 const Rate: React.FC = () => {
-  const navigation = useNavigation()
-  const params = useLocalSearchParams()
-  const [selectedMood, setSelectedMood] = useState<string>((params.mood as string) || '😐')
-  const [title, setTitle] = useState<string>((params.title as string) || '')
-  const [content, setContent] = useState<string>((params.content as string) || '')
-  const [date, setDate] = useState<Date>(params.date ? new Date(params.date as string) : new Date())
-  const [showPicker, setShowPicker] = useState<boolean>(false)
-  const [emojiModalVisible, setEmojiModalVisible] = useState<boolean>(false)
-  const isEditing = !!params.title // or any field
-  const { session } = useAuth()
+  const params = useLocalSearchParams();
+  const [selectedMood, setSelectedMood] = useState<string>((params.mood as string) || '0');
+  const [title, setTitle] = useState<string>((params.title as string) || '');
+  const [content, setContent] = useState<string>((params.content as string) || '');
+  const [date, setDate] = useState<Date>(params.date ? new Date(params.date as string) : new Date());
+  const [showPicker, setShowPicker] = useState<boolean>(false);
+  const [emojiModalVisible, setEmojiModalVisible] = useState<boolean>(false);
+  const { session } = useAuth();
+  const router = useRouter();
 
-  const router = useRouter()
-
-  const formattedDate = date.toDateString()
+  const formattedDate = date.toDateString();
 
   const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    if (Platform.OS === 'android') setShowPicker(false)
-    if (selectedDate) setDate(selectedDate)
-  }
+    if (Platform.OS === 'android') setShowPicker(false);
+    if (selectedDate) setDate(selectedDate);
+  };
 
-  const handleMoodSelect = (emoji: string) => {
-    setSelectedMood(emoji)
-    setEmojiModalVisible(false)
-  }
+  const handleMoodSelect = (emojiId: string) => {
+    setSelectedMood(emojiId);
+    setEmojiModalVisible(false);
+  };
+
+  const getEmojiSrc = (id: string) => {
+    return emojis.find((e) => e.id === id)?.src;
+  };
 
   const saveEntry = async () => {
     const userId = session?.user?.id;
@@ -58,7 +70,7 @@ const Rate: React.FC = () => {
 
     const { error } = await supabase.rpc('insert_diary_entry_and_daily_insight', {
       entry_date: formattedDate,
-      entry_emotion: selectedMood,
+      entry_emotion: parseInt(selectedMood), // 👈 convert ID to number if needed
       entry_title: title,
       entry_text: content,
       entry_user_id: userId,
@@ -66,39 +78,41 @@ const Rate: React.FC = () => {
 
     if (error) {
       console.error('Error saving diary entry:', error.message);
-      // Optionally display an error message to the user
     } else {
-      router.push('..'); // Navigate back on success
+      router.push('..');
     }
   };
 
-
   const deleteEntry = async () => {
-    const {data, error} = await supabase.rpc('delete_diary_entry_and_insight');
-  }
+    const { error } = await supabase.rpc('delete_diary_entry_and_insight');
+    if (error) {
+      console.error('Error deleting diary entry:', error.message);
+    } else {
+      router.push('..');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
         <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.dateButton}>
           <Text style={styles.dateText}>{formattedDate}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{marginBottom: 30, marginLeft: 30}} onPress={()=> deleteEntry()}>
+
+        <TouchableOpacity style={{ marginBottom: 30, marginLeft: 30 }} onPress={deleteEntry}>
           <Feather name="trash-2" size={22} color="rgba(0, 0, 0, 0.47)" />
         </TouchableOpacity>
+
         <TouchableOpacity onPress={() => setEmojiModalVisible(true)}>
-          <Text style={styles.bigEmoji}>{selectedMood}</Text>
+          <Image source={getEmojiSrc(selectedMood)} style={styles.bigEmoji} />
         </TouchableOpacity>
       </View>
 
       {showPicker && (
-        <DateTimePicker
-          value={date}
-          mode="date"
-          display="calendar"
-          onChange={onChange}
-        />
+        <DateTimePicker value={date} mode="date" display="calendar" onChange={onChange} />
       )}
 
+      {/* Mood Emoji Modal */}
       <Modal
         visible={emojiModalVisible}
         transparent
@@ -110,8 +124,8 @@ const Rate: React.FC = () => {
             <Text style={styles.modalTitle}>Choose your mood</Text>
             <View style={styles.modalEmojiRow}>
               {emojis.map((emoji) => (
-                <TouchableOpacity key={emoji} onPress={() => handleMoodSelect(emoji)}>
-                  <Text style={styles.modalEmoji}>{emoji}</Text>
+                <TouchableOpacity key={emoji.id} onPress={() => handleMoodSelect(emoji.id)}>
+                  <Image source={emoji.src} style={styles.modalEmoji} />
                 </TouchableOpacity>
               ))}
             </View>
@@ -141,10 +155,10 @@ const Rate: React.FC = () => {
         <Text style={styles.saveButtonText}>Save Entry</Text>
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
-export default Rate
+export default Rate;
 
 const styles = StyleSheet.create({
   container: {
@@ -168,7 +182,9 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   bigEmoji: {
-    fontSize: 50,
+    width: 50,
+    height: 50,
+    marginLeft: 10,
   },
   titleInput: {
     fontSize: 18,
@@ -227,7 +243,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   modalEmoji: {
-    fontSize: 30,
+    width: 40,
+    height: 40,
     margin: 10,
   },
-})
+});

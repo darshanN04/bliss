@@ -1,4 +1,3 @@
-// DiaryList.tsx
 import React, { useEffect, useState } from 'react'
 import {
   View,
@@ -6,20 +5,38 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
-} from 'react-native'
+  Image } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { useRouter } from 'expo-router'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/providers/auth-provider';
+import { Int32 } from 'react-native/Libraries/Types/CodegenTypes'
+type Emoji = {
+  id: Int32;
+  src: any;
+};
+
+const emojis: Emoji[] = [
+  { id: 0, src: require('@/assets/icons/ryd.png') },
+  { id: 1, src: require('@/assets/icons/Angry.png') },
+  { id: 2, src: require('@/assets/icons/Anxious.png') },
+  { id: 3, src: require('@/assets/icons/Blush.png') },
+  { id: 4, src: require('@/assets/icons/Bored.png') },
+  { id: 5, src: require('@/assets/icons/Cry.png') },
+  { id: 6, src: require('@/assets/icons/Happy.png') },
+  { id: 7, src: require('@/assets/icons/Loved.png') },
+  { id: 8, src: require('@/assets/icons/Sad.png') },
+  { id: 9, src: require('@/assets/icons/Neutral.png') },
+];
 
 
 type DiaryEntry = {
-  id: any;
-  date: string;
+  diary_entry_id: any;
+  entry_date: string;
   title: string;
-  content: string;
-  mood: string;
+  emotion: string;
+  entry: string;
 }
 
 const DiaryList: React.FC = () => {
@@ -42,11 +59,9 @@ const DiaryList: React.FC = () => {
           setEntries(data);
         }
       }
-    
       fetchEntries();
     }, []);
-
-  return (
+ return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
         <Text style={styles.header}>📓 My Diary</Text>
@@ -60,21 +75,25 @@ const DiaryList: React.FC = () => {
 
       <FlatList
         data={[...entries].reverse()}
-        keyExtractor={(item, index) => `${item.date}-${index}`}
+        keyExtractor={(item, index) => `${item.entry_date}-${index}`}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.card} onPress={() => router.push({
                 pathname: '/Rate',
                 params: {
-                date: item.date,
+                date: item.entry_date,
                 title: item.title,
-                content: item.content,
-                mood: item.mood,
+                content: item.entry,
+                mood: item.emotion,
                 },
             })}>
-            <Text style={styles.date}>{item.date}</Text>
+             
+            <Text style={styles.date}>{item.entry_date}</Text>
+            
+            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
             <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.mood}>{item.mood}</Text>
-            <Text numberOfLines={2} style={styles.content}>{item.content}</Text>
+            <Image source={emojis[parseInt(item.emotion)].src} style={{ height: 30, width: 30}} />
+            </View>
+            <Text numberOfLines={2} style={styles.content}>{item.entry}</Text>
           </TouchableOpacity>
         )}
       />
@@ -139,7 +158,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   mood: {
-    fontSize: 22,
+    fontSize: 10,
     marginBottom: 4,
   },
   content: {
