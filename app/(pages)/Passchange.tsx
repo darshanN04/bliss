@@ -32,7 +32,6 @@ const Passchange = () => {
     toast.show('Password changed successfully', { type: 'success' });
     router.push('/Auth');
     
-    
       const { data, error } = await supabase.auth.updateUser({
         password: newPassword,
       });
@@ -53,7 +52,7 @@ const Passchange = () => {
     <LinearGradient
       colors={['rgb(168, 213, 186)', 'rgb(255, 216, 182)']}
       style={{ flex: 1 }}>
-      <View style={{ flex: 1, padding: 20, alignItems: "center" }}>
+      <View style={{ flex: 1, padding: 20, alignItems: "center", justifyContent: "center" }}>
         <View style={{ paddingBottom: 50, paddingTop: 80 }}>
           <Text style={{ fontSize: 30, fontWeight: '900', color: "white" }}>Change Password</Text>
         </View>
