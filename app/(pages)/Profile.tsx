@@ -30,7 +30,7 @@ const Profile = () => {
   const handleDeleteAccount = () => {
     Alert.alert(
       "Delete Account",
-      "Are you sure you want to delete your account? This action cannot be undone.",
+      "Are you sure you want to delete your account?\nThis action cannot be undone.",
       [
         {
           text: "Cancel",
