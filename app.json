@@ -27,7 +27,8 @@
         "imageWidth": 150,
         "imageHeight": 150,
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.blissmentalwellnessapp.bliss"
     },
     "web": {
       "bundler": "metro",
@@ -46,14 +47,14 @@
         "origin": false
       },
       "eas": {
-        "projectId": "9cca2757-3241-4344-864a-318355266682"
+        "projectId": "d4f61e41-168f-47c1-959d-cc2942c0f696"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/9cca2757-3241-4344-864a-318355266682"
+      "url": "https://u.expo.dev/d4f61e41-168f-47c1-959d-cc2942c0f696"
     }
   }
 }
