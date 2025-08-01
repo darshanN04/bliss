@@ -18,18 +18,17 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.darshann04.bliss",
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
-      }
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icons/logo.png",
+        "resizeMode": "contain",
+        "imageWidth": 150,
+        "imageHeight": 150,
         "backgroundColor": "#ffffff"
       },
-      "package": "com.darshann04.bliss"
+      "package": "com.blissmentalwellnessapp.bliss"
     },
     "web": {
       "bundler": "metro",
@@ -48,8 +47,14 @@
         "origin": false
       },
       "eas": {
-        "projectId": "d30a69d4-2144-4526-88f6-03b79982f8cd"
+        "projectId": "d4f61e41-168f-47c1-959d-cc2942c0f696"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/d4f61e41-168f-47c1-959d-cc2942c0f696"
     }
   }
 }
