@@ -2,6 +2,7 @@
   "expo": {
     "name": "bliss",
     "slug": "bliss",
+    "owner": "bliss-mental-wellness-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icons/logo.png",
@@ -39,6 +40,20 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "9cca2757-3241-4344-864a-318355266682"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/9cca2757-3241-4344-864a-318355266682"
     }
   }
 }
