@@ -4,9 +4,11 @@ import {useForm, Controller} from 'react-hook-form'
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import errorMap from 'zod/lib/locales/en'
-import {  router } from 'expo-router'
+import {  Redirect, router } from 'expo-router'
 import { useToast } from 'react-native-toast-notifications'
 import { supabase } from '@/lib/supabase'
+import { useAuth } from '@/providers/auth-provider'
+
 
 
 const authschema = zod.object({
@@ -18,6 +20,9 @@ const authschema = zod.object({
 
 const Auth = () => {
     const Toast = useToast();
+    const{session}=useAuth();
+
+    if(session) return <Redirect href="/More" />
 
     const {control, handleSubmit, formState} = useForm({
         resolver: zodResolver(authschema),
@@ -38,7 +43,6 @@ const Auth = () => {
                 placement: 'top',
                 duration: 2000,
             });            
-            router.push('/Home');
         }
     }
 
@@ -52,7 +56,7 @@ const Auth = () => {
             email: email,
             password: password,
           })
-          console.log(data)
+          // console.log(data)
         if (error){
             alert(error.message);
         } else{
@@ -131,7 +135,7 @@ const Auth = () => {
         </TouchableOpacity>
                 
         <TouchableOpacity 
-        style={[styles.button, {backgroundColor: 'rgba(37, 244, 151, 0)', borderWidth: 1, borderColor: 'white'}]} 
+        style={[styles.button]} 
         onPress={handleSubmit(signUp)} 
         disabled={formState.isSubmitting}
         
@@ -190,7 +194,7 @@ const styles = StyleSheet.create({
         color: 'red',
     },
     button: {
-        backgroundColor: 'rgb(37, 171, 244)',
+        backgroundColor: 'rgb(129, 180, 149)',
         width: '80%',
         padding: 16,
         borderRadius: 8,
